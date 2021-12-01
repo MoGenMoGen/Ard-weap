@@ -1,0 +1,82 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/proreport/list/main",
+    "pages/proreport/detail/main",
+    "pages/proreport/review/main",
+    "pages/followrecord/list/main",
+    "pages/homereport/add/main",
+    "pages/homereport/detail/main",
+    "pages/proreport/add/main",
+    "pages/personal/index/main",
+    "pages/document/list/main",
+    "pages/document/detail/main",
+    "pages/opensea/main",
+    "pages/followrecord/add/main",
+    "pages/followrecord/detail/main",
+    "pages/personal/editinfo/main",
+    "pages/personal/info/main",
+    "pages/personal/msg/main",
+    "pages/personal/msgdetail/main",
+    "pages/personal/linked/main",
+    "pages/personal/linkedadd/main",
+    "pages/personal/linkeddetail/main",
+    "pages/personal/payStatus/main",
+    "pages/personal/agentList/main",
+    "pages/personal/agentDetail/main",
+    "pages/login/index/main",
+    "pages/login/changepwd/main",
+    "pages/login/forgetpwd/main",
+    "pages/marketdev/list/main",
+    "pages/marketdev/add/main",
+    "pages/marketdev/detail/main",
+    "pages/marketdev/record/main",
+    "pages/marketdev/recordadd/main",
+    "pages/marketdev/recorddetail/main",
+    "pages/order/list/main",
+    "pages/order/detail/main",
+    "pages/order/logistics/main",
+    "pages/followrecord/history/main",
+    "pages/order/wxDetail/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999",
+    "backgroundColor": "#fff",
+    "selectedColor": "#F6A33E",
+    "borderStyle": "white",
+
+    "list": [{
+      "text": "首页",
+      "pagePath": "pages/index/main",
+      "iconPath": "static/tabs/index.png",
+      "selectedIconPath": "static/tabs/index-active.png"
+    },{
+      "text": "销售资料",
+      "pagePath": "pages/document/list/main",
+      "iconPath": "static/tabs/document.png",
+      "selectedIconPath": "static/tabs/document-active.png"
+    },{
+      "text":"个人中心",
+      "pagePath":"pages/personal/index/main",
+      "iconPath":"static/tabs/person.png",
+      "selectedIconPath":"static/tabs/person-active.png"
+    }],
+    "position": "bottom"
+  },
+  "usingComponents": {
+    "i-steps": "../../static/iview/steps/index",
+    "i-step": "../../static/iview/step/index",
+    "i-icon": "../../static/iview/icon/index"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  }
+}
