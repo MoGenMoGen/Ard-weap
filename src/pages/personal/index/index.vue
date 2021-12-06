@@ -187,6 +187,8 @@ export default {
     },
     loginOut() {
       this.api.sysLoginOut();
+      this.until.seClear();
+
     },
     loginBtnClick(e) {
       var that = this;

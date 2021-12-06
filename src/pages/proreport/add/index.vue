@@ -4,13 +4,19 @@
       <div class="searchComp" v-if="searchShow">
         <div class="content">
           <span class="iconfont" @click="closeSearch">&#xe7c6;</span>
-          <input placeholder="请输入联系人" v-model="compName" maxlength="100" />
-          <div class="list" v-if="linkedList.length>0">
+          <input
+            placeholder="请输入联系人"
+            v-model="compName"
+            maxlength="100"
+          />
+          <div class="list" v-if="linkedList.length > 0">
             <p
-              v-for="(item,index) in linkedList"
+              v-for="(item, index) in linkedList"
               :key="index"
               @click="chooseComp(item)"
-            >{{item.name+' (电话：'+item.linkPhone+')'}}</p>
+            >
+              {{ item.name + " (电话：" + item.linkPhone + ")" }}
+            </p>
           </div>
           <p class="noData" v-else>— 没有相关数据 —</p>
         </div>
@@ -18,9 +24,37 @@
       <div class="search">
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>所在区域：</text>
+          <text>工程名称：</text>
+          <input
+            type="text"
+            v-model="form.projectName"
+            placeholder="请输入工程名称"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>工程类型：</text>
+          <picker
+            @change="changeProjectType"
+            :range="projectTypeList"
+            range-key="nm"
+          >
+            <view class="picker">{{
+              form.projectType ? form.projectType : " 请选择工程类型"
+            }}</view>
+            <span class="iconfont">&#xe60f;</span>
+          </picker>
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>工程所在区域：</text>
           <div class="addr">
-            <addr-select @changeAddr="changeAddr" :disabled="disabled" ref="addr"></addr-select>
+            <addr-select
+              @changeAddr="changeAddr"
+              :disabled="disabled"
+              ref="addr"
+            ></addr-select>
           </div>
         </div>
         <div>
@@ -35,19 +69,24 @@
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>工程跟进人：</text>
+          <text>报备人：</text>
           <input
             type="text"
             v-model="form.projectFollowMan"
-            placeholder="请输入工程跟进人"
+            placeholder="请输入报备人"
             placeholder-style="color:#999;"
           />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>申报时间：</text>
-          <picker mode="date" :value="reportTime" disabled="true" @change="reportDateChange">
-            <view class="picker">{{reportTime}}</view>
+          <picker
+            mode="date"
+            :value="reportTime"
+            disabled="true"
+            @change="reportDateChange"
+          >
+            <view class="picker">{{ reportTime }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
@@ -55,8 +94,13 @@
           <span class="iconfont">&#xe69f;</span>
           <text>经销商名称：</text>
           <!-- 赋值自己 -->
-          <picker @change="changeSaleName" :range="saleList" range-key="name" :disabled="canPicker">
-            <view class="picker">{{form.saleName?form.saleName:''}}</view>
+          <picker
+            @change="changeSaleName"
+            :range="saleList"
+            range-key="name"
+            :disabled="canPicker"
+          >
+            <view class="picker">{{ form.saleName ? form.saleName : "" }}</view>
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
@@ -66,18 +110,21 @@
           <radio-group class="radio-group" @change="outTownChange">
             <label class="radio" v-for="(item, index) in items" :key="index">
               <radio :value="item.name" :checked="item.checked" />
-              {{item.value}}
+              {{ item.value }}
             </label>
           </radio-group>
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>项目负责人：</text>
-          <button
-            plain="true"
-            @click="showSearch"
-          >{{form.projectLeader?form.projectLeader:'请输入项目负责人'}}</button>
-          <i class="iconfont" @click="toPage('../../personal/linkedadd/main?type=add')">&#xe605;</i>
+          <button plain="true" @click="showSearch">
+            {{ form.projectLeader ? form.projectLeader : "请输入项目负责人" }}
+          </button>
+          <i
+            class="iconfont"
+            @click="toPage('../../personal/linkedadd/main?type=add')"
+            >&#xe605;</i
+          >
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
@@ -100,25 +147,7 @@
             placeholder-style="color:#999;"
           />
         </div>
-        <div>
-          <span class="iconfont">&#xe69f;</span>
-          <text>工程名称：</text>
-          <input
-            type="text"
-            v-model="form.projectName"
-            placeholder="请输入工程名称"
-            placeholder-style="color:#999;"
-          />
-        </div>
-        <div>
-          <span class="iconfont">&#xe69f;</span>
-          <text>工程类型：</text>
-          <picker @change="changeProjectType" :range="projectTypeList" range-key="nm">
-            <view class="picker">{{form.projectType?form.projectType:' 请选择工程类型'}}</view>
-            <span class="iconfont">&#xe60f;</span>
-          </picker>
-        </div>
-        <div>
+        <!-- <div>
           <span class="iconfont">&#xe69f;</span>
           <text>总投资额：</text>
           <input
@@ -128,12 +157,18 @@
             placeholder-style="color:#999;"
           />
           <i>万元</i>
-        </div>
+        </div> -->
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>工程现状：</text>
-          <picker @change="changeProjectStatus" :range="proStatusList" range-key="nm">
-            <view class="picker">{{projectStatusNm?projectStatusNm:'请选择工程现状'}}</view>
+          <picker
+            @change="changeProjectStatus"
+            :range="proStatusList"
+            range-key="nm"
+          >
+            <view class="picker">{{
+              projectStatusNm ? projectStatusNm : "请选择工程现状"
+            }}</view>
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
@@ -142,13 +177,17 @@
           <text>主要产品类型：</text>
 
           <checkbox-group @change="checkboxChange">
-            <label class="checkbox" v-for="(item, index) in mainProductTypeList" :key="index">
+            <label
+              class="checkbox"
+              v-for="(item, index) in mainProductTypeList"
+              :key="index"
+            >
               <checkbox :value="item.cd" :checked="item.checked" />
-              {{item.nm}}
+              {{ item.nm }}
             </label>
           </checkbox-group>
         </div>
-        <div>
+        <!-- <div>
           <text>工程投资金额：</text>
           <input
             type="number"
@@ -157,11 +196,16 @@
             placeholder-style="color:#999;"
           />
           <i>万元</i>
-        </div>
+        </div> -->
         <div>
           <text>投标时间：</text>
-          <picker mode="date" :value="form.bidTime" start="1980-01-01" @change="bidDateChange">
-            <view class="picker">{{form.bidTime ? form.bidTime : ''}}</view>
+          <picker
+            mode="date"
+            :value="form.bidTime"
+            start="1980-01-01"
+            @change="bidDateChange"
+          >
+            <view class="picker">{{ form.bidTime ? form.bidTime : "" }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
@@ -174,7 +218,9 @@
             start="1980-01-01"
             @change="openDateChange"
           >
-            <view class="picker">{{form.projectOpenTime ? form.projectOpenTime : ''}}</view>
+            <view class="picker">{{
+              form.projectOpenTime ? form.projectOpenTime : ""
+            }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
@@ -198,14 +244,21 @@
             :value="form.planPurchaseTime"
             @change="planPurchaseChange"
           >
-            <view class="picker">{{form.planPurchaseTime ? form.planPurchaseTime : ''}}</view>
+            <view class="picker">{{
+              form.planPurchaseTime ? form.planPurchaseTime : ""
+            }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
         <div>
           <text>签约时间：</text>
-          <picker mode="date" start="1980-01-01" :value="form.signDate" @change="signDateChange">
-            <view class="picker">{{form.signDate ? form.signDate : ''}}</view>
+          <picker
+            mode="date"
+            start="1980-01-01"
+            :value="form.signDate"
+            @change="signDateChange"
+          >
+            <view class="picker">{{ form.signDate ? form.signDate : "" }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
@@ -217,7 +270,9 @@
             :value="form.actualPurchaseTime"
             @change="actualPurchaseChange"
           >
-            <view class="picker">{{form.actualPurchaseTime ? form.actualPurchaseTime : ''}}</view>
+            <view class="picker">{{
+              form.actualPurchaseTime ? form.actualPurchaseTime : ""
+            }}</view>
             <span class="iconfont">&#xe611;</span>
           </picker>
         </div>
@@ -237,21 +292,35 @@
           <radio-group class="radio-group" @change="purseModelChange">
             <label class="radio" v-for="(item, index) in buyItems" :key="index">
               <radio :value="item.name" :checked="item.checked" />
-              {{item.value}}
+              {{ item.value }}
             </label>
           </radio-group>
         </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>采购方式：</text>
+          <radio-group class="radio-group" @change="purseModeChange">
+            <label class="radio" v-for="(item, index) in buyModes" :key="index">
+              <radio :value="item.name" :checked="item.checked" />
+              {{ item.value }}
+            </label>
+          </radio-group>
+        </div>
+
+        <!-- 采购方式：公开招投标、内部议标、定向采购； -->
       </div>
       <div class="info">
         <span></span>
-        <span>相关单位</span>
+        <span>工程项目信息来源</span>
       </div>
       <div class="conect">
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>单位身份：</text>
           <picker @change="changeUnitType" :range="unitList" range-key="nm">
-            <view class="picker">{{unitTypeNm?unitTypeNm:'请选择单位身份'}}</view>
+            <view class="picker">{{
+              unitTypeNm ? unitTypeNm : "请选择单位身份"
+            }}</view>
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
@@ -300,12 +369,20 @@
       </div>
       <!-- 相关单位 -->
       <div class="rels">
-        <div class="rel-item" v-for="(itemRel,index) in unitFormList" :key="itemRel.id">
+        <div
+          class="rel-item"
+          v-for="(itemRel, index) in unitFormList"
+          :key="itemRel.id"
+        >
           <i class="iconfont" @click="deletUnit(index)">&#xe7c6;</i>
-          <div class="final-item" v-for="(item,index1) in itemRel.relsArr" :key="item.nm">
+          <div
+            class="final-item"
+            v-for="(item, index1) in itemRel.relsArr"
+            :key="item.nm"
+          >
             <span v-if="item.required" class="iconfont">&#xe69f;</span>
-            <div>{{item.key}}</div>
-            <div>{{item.value}}</div>
+            <div>{{ item.key }}</div>
+            <div>{{ item.value }}</div>
           </div>
         </div>
       </div>
@@ -402,7 +479,9 @@
     </div>
     <cover-view class="operate" v-if="showBtn">
       <button plain="true" :disabled="disabledBtn" @click="save">保存</button>
-      <button plain="true" :disabled="disabledBtn" @click="confirm">确定</button>
+      <button plain="true" :disabled="disabledBtn" @click="confirm">
+        确定
+      </button>
     </cover-view>
   </div>
 </template>
@@ -412,9 +491,9 @@ import addrSelect from "@/components/addrSelect";
 export default {
   data() {
     return {
-      compName:'',
+      compName: "",
       id: "", //修改报备的时候传值的Id
-      reportTime:'',
+      reportTime: "",
       canPicker: false,
       disabledBtn: false,
       disabled: false,
@@ -428,46 +507,46 @@ export default {
       proStatusList: [
         {
           id: 1,
-          nm: "土建"
+          nm: "土建",
         },
         {
           id: 2,
-          nm: "封顶"
+          nm: "封顶",
         },
         {
           id: 3,
-          nm: "外装"
+          nm: "外装",
         },
         {
           id: 4,
-          nm: "内装"
-        }
+          nm: "内装",
+        },
       ],
       unitList: [
         {
           id: 1,
-          nm: "投资方"
+          nm: "投资方",
         },
         {
           id: 2,
-          nm: "总包方"
+          nm: "总包方",
         },
         {
           id: 3,
-          nm: "空调及安装方"
+          nm: "空调及安装方",
         },
         {
           id: 4,
-          nm: "监理方"
+          nm: "监理方",
         },
         {
           id: 5,
-          nm: "装饰设计方"
+          nm: "装饰设计方",
         },
         {
           id: 6,
-          nm: "其它相关方"
-        }
+          nm: "其它相关方",
+        },
       ],
       unitFormList: [],
       saleList: [],
@@ -477,26 +556,26 @@ export default {
           nm: "unitName",
           key: "公司名称：",
           value: "宁波楚晟光新能源科技有限公司",
-          required: true
+          required: true,
         },
         {
           nm: "unitLeader",
           key: "负责人姓名：",
           value: "张子龙",
-          required: true
+          required: true,
         },
         {
           nm: "unitLinkPhone",
           key: "联系电话：",
           value: "12345678910",
-          required: true
+          required: true,
         },
         {
           nm: "expectSucceedPercent",
           key: "预计成功率：",
           value: "80%",
-          required: false
-        }
+          required: false,
+        },
       ],
       form: {
         saleId: "",
@@ -508,15 +587,15 @@ export default {
         projectAreaCode: "",
         projectAreaName: "",
         signDate: "", //签约时间
-        projectFollowMan: "", //工程跟进人
+        projectFollowMan: "", //报备人
         saleName: "",
         isOutTown: "", //默认选中第一个
         leaderPost: "",
         projectType: "",
-        totalInvestAmount: "",
+        // totalInvestAmount: "",
         projectStatus: "",
         mainProduct: "",
-        projectInvestAmount: "",
+        // projectInvestAmount: "",
         bidTime: "",
         projectOpenTime: "",
         planPurchaseAmount: "",
@@ -530,55 +609,60 @@ export default {
         saleType: "", //经销商类别
         reportUserType: "", //报备项目的用户类型
         unitList: [],
-        competeList: []
+        competeList: [],
       },
       unitForm: {
         unitType: "",
         unitName: "",
         unitLeader: "",
         unitLinkPhone: "",
-        expectSucceedPercent: ""
+        expectSucceedPercent: "",
       },
       formOne: {
         name: "",
-        remark: ""
+        remark: "",
       },
       formTwo: {
         name: "",
-        remark: ""
+        remark: "",
       },
       formThree: {
         name: "",
-        remark: ""
+        remark: "",
       },
       items: [
         { name: "0", value: "否", checked: false },
-        { name: "1", value: "是", checked: false }
+        { name: "1", value: "是", checked: false },
       ],
       buyItems: [
         { name: "1", value: "甲定甲供", checked: false },
         { name: "2", value: "甲定乙供", checked: false },
         { name: "3", value: "乙定乙供", checked: false },
-        { name: "4", value: "乙定甲供", checked: false }
-      ]
+        { name: "4", value: "乙定甲供", checked: false },
+      ],
+      buyModes: [
+        { name: "1", value: "公开招投标", checked: false },
+        { name: "2", value: "内部议标", checked: false },
+        { name: "3", value: "定向采购", checked: false },
+      ],
     };
   },
   watch: {
     compName(val) {
-      console.log('=============='+val)
+      console.log("==============" + val);
       this.getLinkedList(val);
-    }
+    },
   },
   onUnload() {
-    this.items.map(item => (item.checked = false));
-    this.buyItems.map(item => (item.checked = false));
-    this.mainProductTypeList=[]
+    this.items.map((item) => (item.checked = false));
+    this.buyItems.map((item) => (item.checked = false));
+    this.mainProductTypeList = [];
     this.unitForm = {
       unitType: "",
       unitName: "",
       unitLeader: "",
       unitLinkPhone: "",
-      expectSucceedPercent: ""
+      expectSucceedPercent: "",
     };
     this.form = {
       saleId: "",
@@ -590,15 +674,15 @@ export default {
       projectAreaCode: "",
       projectAreaName: "",
       signDate: "", //签约时间
-      projectFollowMan: "", //工程跟进人
+      projectFollowMan: "", //报备人
       saleName: "",
       isOutTown: "",
       leaderPost: "",
       projectType: "",
-      totalInvestAmount: "",
+      // totalInvestAmount: "",
       projectStatus: "",
       mainProduct: "",
-      projectInvestAmount: "",
+      // projectInvestAmount: "",
       bidTime: "",
       projectOpenTime: "",
       planPurchaseAmount: "",
@@ -613,24 +697,24 @@ export default {
       saleType: "", //经销商类别
       reportUserType: "", //报备项目的用户类型
       unitList: [],
-      competeList: []
+      competeList: [],
     };
     this.formOne = {
       name: "",
-      remark: ""
+      remark: "",
     };
     this.formTwo = {
       name: "",
-      remark: ""
+      remark: "",
     };
     this.formThree = {
       name: "",
-      remark: ""
+      remark: "",
     };
     this.unitTypeNm = "";
     this.projectStatusNm = "";
     this.unitFormList = [];
-    this.searchShow = false
+    this.searchShow = false;
   },
   onLoad(options) {
     this.id = options.id && options.id !== "undefined" ? options.id : "";
@@ -640,9 +724,21 @@ export default {
     // console.log(this.unitFormList)
     this.disabledBtn = false;
     await this.getUserInfo();
+    //我方业务人员报备的项目为埃瑞德公司直采项目，直采项目异地工程选项默认为否
+    if (this.userInfo.userType == 1 || this.userInfo.userType == 3) {
+      this.$refs.addr.setAddr("埃瑞德");
+      this.form.projectAreaName = "埃瑞德";
+      this.form.projectAreaCode = "999999";
+      this.until.seSave("proAreaName", this.form.projectAreaName);
+      this.until.seSave("proAreaCode", this.form.projectAreaCode);
+
+      this.form.isOutTown = 0;
+      this.items[0].checked = true;
+      this.$set(this.items, 0, this.items[0]);
+    }
     await this.getLinkedList();
     await this.getProjectTypeDic();
-    if(this.mainProductTypeList.length==0){
+    if (this.mainProductTypeList.length == 0) {
       await this.getMainProductTypeDic();
     }
     await this.getSaleNameList();
@@ -651,12 +747,13 @@ export default {
     }
     let { year, month, day, hour, minite } = this.until.formatDate();
     this.reportTime = `${year}-${month}-${day} ${hour}:${minite}`;
-    let areaName = this.until.seGet("proAreaName");
-    if (areaName) {
-      this.form.projectAreaName = areaName;
-      this.form.projectAreaCode = this.until.seGet("proAreaCode");
-      this.$refs.addr.setAddr(areaName);
-    }
+    // let areaName = this.until.seGet("proAreaName");
+    // if (areaName) {
+    //   this.form.projectAreaName = areaName;
+    //   this.form.projectAreaCode = this.until.seGet("proAreaCode");
+    //   this.$refs.addr.setAddr(areaName);
+    // }
+
     //清空单选，多选或者下拉
     // if (!this.id) {
     //
@@ -687,9 +784,9 @@ export default {
       this.form.actualPurchaseTime = this.form.actualPurchaseTime
         ? this.form.actualPurchaseTime.substring(0, 10)
         : "";
-      this.form.projectInvestAmount = this.form.projectInvestAmount
-        ? this.form.projectInvestAmount
-        : "";
+      // this.form.projectInvestAmount = this.form.projectInvestAmount
+      //   ? this.form.projectInvestAmount
+      //   : "";
       //日期
       //异地工程
 
@@ -737,25 +834,25 @@ export default {
         if (index === 0) {
           this.formOne = {
             name: item.name,
-            remark: item.remark
+            remark: item.remark,
           };
         } else if (index === 1) {
           this.formTwo = {
             name: item.name,
-            remark: item.remark
+            remark: item.remark,
           };
         } else {
           this.formThree = {
             name: item.name,
-            remark: item.remark
+            remark: item.remark,
           };
         }
       });
       // console.log(this.form.unitList)
       if (this.form.unitList.length > 0) {
         this.unitFormList = this.form.unitList;
-        this.unitFormShowList = this.unitFormList.map(itemRel => {
-          this.relsArr.map(item => {
+        this.unitFormShowList = this.unitFormList.map((itemRel) => {
+          this.relsArr.map((item) => {
             item.value = itemRel[item.nm];
             if (item.nm == "unitType") {
               switch (itemRel[item.nm]) {
@@ -835,6 +932,18 @@ export default {
         this.$set(this.buyItems, index, item);
       });
     },
+    purseModeChange(e) {
+      //需要与后端约定好字段
+      // this.form.purchaseModel = e.mp.detail.value;
+      this.buyModes.forEach((item, index) => {
+        if (item.name === e.mp.detail.value) {
+          item.checked = true;
+        } else {
+          item.checked = false;
+        }
+        this.$set(this.buyModes, index, item);
+      });
+    },
     //地区更改
     changeAddr(addr) {
       // console.log(addr);
@@ -886,17 +995,17 @@ export default {
       this.form.projectStatus = this.proStatusList[index].id;
     },
     async getLinkedList(nm) {
-     let param = {
-        devUserId: this.userInfo.userId
+      let param = {
+        devUserId: this.userInfo.userId,
       };
       if (this.userInfo.extUserIds) {
         param.extUserIds = this.userInfo.extUserIds;
       }
-      if(nm){
-        param.name = nm
+      if (nm) {
+        param.name = nm;
       }
-      let data= await this.api.getSysCustomerList(param);
-      this.linkedList = data ? data : []
+      let data = await this.api.getSysCustomerList(param);
+      this.linkedList = data ? data : [];
     },
     async getUserInfo() {
       this.userInfo = await this.api.getSysUserInfo();
@@ -925,17 +1034,17 @@ export default {
     },
     async getProjectTypeDic() {
       this.projectTypeList = await this.api.getBaseDictionaryList({
-        cd: "projectType"
+        cd: "projectType",
       });
     },
     async getMainProductTypeDic() {
       this.mainProductTypeList = await this.api.getBaseDictionaryList({
-        cd: "mainProductType"
+        cd: "mainProductType",
       });
     },
     async getSaleNameList() {
       let res = await this.api.getSysAllSaleNameList();
-      res.map(item => {
+      res.map((item) => {
         this.saleList.push(item.crmAgentInfoVo);
       });
     },
@@ -955,7 +1064,7 @@ export default {
     actualPurchaseChange(e) {
       this.form.actualPurchaseTime = e.mp.detail.value;
     },
-    checkboxChange: function(e) {
+    checkboxChange: function (e) {
       let arr = e.mp.detail.value;
 
       this.form.mainProduct = arr.join(",");
@@ -977,7 +1086,7 @@ export default {
       let arr = [
         { projectAreaName: "所在区域" },
         { projectAddress: "详细地址" },
-        { projectFollowMan: "工程跟进人" },
+        { projectFollowMan: "报备人" },
         // { reportTime: "申报时间" },
         { saleName: "经销商名称" },
         { isOutTown: "异地工程" },
@@ -986,14 +1095,14 @@ export default {
         { leaderLinkPhone: "联系电话" },
         { projectName: "工程名称" },
         { projectType: "工程类型" },
-        { totalInvestAmount: "总投资额" },
+        // { totalInvestAmount: "总投资额" },
         { projectStatus: "工程现状" },
         { mainProduct: "主要产品类型" },
         { projectOpenTime: "工程施工时间" },
         { planPurchaseAmount: "预采金额" },
         { planPurchaseTime: "预采时间" },
         { remark: "技术优势描述" },
-        { purchaseModel: "采购模式" }
+        { purchaseModel: "采购模式" },
       ];
 
       return this.until.requireVerify(this.form, arr);
@@ -1003,7 +1112,7 @@ export default {
         { unitType: "单位身份" },
         { unitName: "公司名称" },
         { unitLeader: "负责人姓名" },
-        { unitLinkPhone: "联系电话" }
+        { unitLinkPhone: "联系电话" },
       ];
 
       return this.until.requireVerify(this.unitForm, arr);
@@ -1030,7 +1139,7 @@ export default {
       //判断必填字段
       //存在相同公司
       let filters = this.unitFormList.filter(
-        item => item.unitName === this.unitForm.unitName
+        (item) => item.unitName === this.unitForm.unitName
       );
       // console.log('添加相关单位2')
       //2019年10月23日 设计部门要求去掉判断
@@ -1038,90 +1147,88 @@ export default {
       //   this.until.showToast("不要添加已有的公司名称", "none", 500);
       //   return;
       // } else {
-        let res = this.verifyUnitRequire();
-        if (res) {
-          this.until.showToast(res, "none", 400);
+      let res = this.verifyUnitRequire();
+      if (res) {
+        this.until.showToast(res, "none", 400);
+        return false;
+      } else {
+        let regPhoneUnit = this.reg.checkPhone(this.unitForm.unitLinkPhone);
+        if (regPhoneUnit !== "ok") {
+          this.until.showToast(
+            "请在相关单位中填写正确的手机号码格式",
+            "none",
+            500
+          );
           return false;
-        } else {
-          let regPhoneUnit = this.reg.checkPhone(this.unitForm.unitLinkPhone);
-          if (regPhoneUnit !== "ok") {
-            this.until.showToast(
-              "请在相关单位中填写正确的手机号码格式",
-              "none",
-              500
-            );
-            return false;
-          }
-          // console.log("相关单位");
-
-          this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm)));
-          // console.log(this.unitFormList)
-          this.unitFormShowList = this.unitFormList.map(itemRel => {
-            this.relsArr.map(item => {
-              item.value = itemRel[item.nm];
-              if (item.nm == "unitType") {
-                switch (itemRel[item.nm]) {
-                  case 1:
-                    item.value = "投资方";
-                    break;
-                  case 2:
-                    item.value = "总包方";
-                    break;
-                  case 3:
-                    item.value = "空调及安装方";
-                    break;
-                  case 4:
-                    item.value = "监理方";
-                    break;
-                  case 5:
-                    item.value = "装饰设计方";
-                    break;
-                  case 6:
-                    item.value = "其它相关方";
-                    break;
-                  default:
-                    break;
-                }
-              }
-              if (item.nm == "expectSucceedPercent") {
-                item.value = `${item.value}%`;
-              }
-            });
-            itemRel.relsArr = JSON.parse(JSON.stringify(this.relsArr));
-          });
-
-          if (handle) {
-            this.until.showToast("添加成功", "success", 400);
-          }
-          setTimeout(() => {
-            this.unitForm = {
-              unitType: "",
-              unitName: "",
-              unitLeader: "",
-              unitLinkPhone: "",
-              expectSucceedPercent: ""
-            };
-            this.unitTypeNm = "";
-          }, 1000);
         }
+        // console.log("相关单位");
+
+        this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm)));
+        // console.log(this.unitFormList)
+        this.unitFormShowList = this.unitFormList.map((itemRel) => {
+          this.relsArr.map((item) => {
+            item.value = itemRel[item.nm];
+            if (item.nm == "unitType") {
+              switch (itemRel[item.nm]) {
+                case 1:
+                  item.value = "投资方";
+                  break;
+                case 2:
+                  item.value = "总包方";
+                  break;
+                case 3:
+                  item.value = "空调及安装方";
+                  break;
+                case 4:
+                  item.value = "监理方";
+                  break;
+                case 5:
+                  item.value = "装饰设计方";
+                  break;
+                case 6:
+                  item.value = "其它相关方";
+                  break;
+                default:
+                  break;
+              }
+            }
+            if (item.nm == "expectSucceedPercent") {
+              item.value = `${item.value}%`;
+            }
+          });
+          itemRel.relsArr = JSON.parse(JSON.stringify(this.relsArr));
+        });
+
+        if (handle) {
+          this.until.showToast("添加成功", "success", 400);
+        }
+        setTimeout(() => {
+          this.unitForm = {
+            unitType: "",
+            unitName: "",
+            unitLeader: "",
+            unitLinkPhone: "",
+            expectSucceedPercent: "",
+          };
+          this.unitTypeNm = "";
+        }, 1000);
+      }
       //}
       return true;
     },
-    moneyCheck(){
-      let msg = ''
-      if(isNaN(this.form.totalInvestAmount)){
-        msg = '总投资金额必须为数字!'
-      }
-      if(isNaN(this.form.projectInvestAmount)){
-        msg = '工程投资金额必须为数字!'
-
-      }
-      if(isNaN(this.form.planPurchaseAmount)){
-        msg = '预采金额必须为数字!'
-
+    moneyCheck() {
+      let msg = "";
+      // if (isNaN(this.form.totalInvestAmount)) {
+      //   msg = "总投资金额必须为数字!";
+      // }
+      // if (isNaN(this.form.projectInvestAmount)) {
+      //   msg = "工程投资金额必须为数字!";
+      // }
+      if (isNaN(this.form.planPurchaseAmount)) {
+        msg = "预采金额必须为数字!";
       }
 
-      return msg
+      return msg;
     },
     async save() {
       this.disabledBtn = true;
@@ -1146,7 +1253,7 @@ export default {
         if (competeList.length > 0) {
           this.form.competeList = JSON.stringify(competeList);
         }
-        this.unitFormList.map(item => {
+        this.unitFormList.map((item) => {
           delete item.relsArr;
         });
         if (this.unitFormList.length > 0) {
@@ -1161,9 +1268,9 @@ export default {
         setTimeout(() => {
           this.disabledBtn = false;
         }, 2000);
-        if(this.moneyCheck()){
+        if (this.moneyCheck()) {
           this.until.showToast(this.moneyCheck(), "none", 400);
-          return
+          return;
         }
 
         // console.log('保存成功')
@@ -1205,7 +1312,7 @@ export default {
         if (competeList.length > 0) {
           this.form.competeList = JSON.stringify(competeList);
         }
-        this.unitFormList.map(item => {
+        this.unitFormList.map((item) => {
           delete item.relsArr;
         });
         this.form.unitList = JSON.stringify(this.unitFormList);
@@ -1235,9 +1342,9 @@ export default {
             setTimeout(() => {
               this.disabledBtn = false;
             }, 2000);
-            if(this.moneyCheck()){
+            if (this.moneyCheck()) {
               this.until.showToast(this.moneyCheck(), "none", 400);
-              return
+              return;
             }
 
             // console.log('提交成功')
@@ -1252,11 +1359,11 @@ export default {
       } else {
         this.disabledBtn = false;
       }
-    }
+    },
   },
   components: {
-    addrSelect
-  }
+    addrSelect,
+  },
 };
 </script>
 

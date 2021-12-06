@@ -111,7 +111,7 @@
           <div>{{item.projectName}}</div>
         </div>
         <div>
-          <div>所在区域</div>
+          <div>工程所在区域</div>
           <div>{{item.projectAreaName}}</div>
         </div>
         <div>
@@ -193,7 +193,7 @@ export default {
       regoinList: [
         {
           nm: "projectAreaName",
-          key: "所在区域：",
+          key: "工程所在区域：",
           value: "浙江省宁波市海曙区",
           required: true
         },

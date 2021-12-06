@@ -177,7 +177,7 @@ export default {
       }else {
         this.addr.area = ''
       }
-      console.log(this.addr)
+      console.log(5657567,this.addr)
       this.$emit("changeAddr", this.addr);
     },
     //选择某个地址后下级地址跟着改变

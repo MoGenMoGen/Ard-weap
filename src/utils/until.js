@@ -86,6 +86,9 @@ class until {
   seRemove(name) {
     wx.removeStorageSync(name);
   }
+  seClear(){
+    wx.clearStorageSync()
+  }
   //local存取
   loSave(name, obj) {
     localStorage.setItem(name, obj);

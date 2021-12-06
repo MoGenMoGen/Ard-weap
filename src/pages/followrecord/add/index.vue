@@ -35,9 +35,9 @@
         />
       </div>
       <div>
-        <text>跟进状态：</text>
+        <text>工程跟进状态：</text>
         <picker @change="changeStatus" :range="statusList" range-key="nm">
-          <view class="picker">{{form.status?form.status:'请选择跟进状态'}}</view>
+          <view class="picker">{{form.status?form.status:'请选择工程跟进状态'}}</view>
           <span class="iconfont">&#xe60f;</span>
         </picker>
       </div>
