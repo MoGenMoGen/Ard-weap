@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/login/index/main",
     "pages/index/main",
     "pages/proreport/list/main",
     "pages/proreport/detail/main",
@@ -24,7 +25,9 @@
     "pages/personal/payStatus/main",
     "pages/personal/agentList/main",
     "pages/personal/agentDetail/main",
-    "pages/login/index/main",
+
+
+
     "pages/login/changepwd/main",
     "pages/login/forgetpwd/main",
     "pages/marketdev/list/main",

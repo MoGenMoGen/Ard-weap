@@ -11,16 +11,24 @@
           range-key="projectNameAndAreaName"
           :disabled="canPick"
         >
-          <view
-            class="picker"
-          >{{form.projectName && form.projectName!=='undefined'?form.projectName:'请选择项目名称'}}</view>
+          <view class="picker">{{
+            form.projectName && form.projectName !== "undefined"
+              ? form.projectName
+              : "请选择项目名称"
+          }}</view>
           <span class="iconfont">&#xe60f;</span>
         </picker>
       </div>
       <div>
         <text>跟进方式：</text>
-        <picker @change="changeFollowStyle" :range="followStyleList" range-key="nm">
-          <view class="picker">{{form.visitType?form.visitType:'请选择跟进方式'}}</view>
+        <picker
+          @change="changeFollowStyle"
+          :range="followStyleList"
+          range-key="nm"
+        >
+          <view class="picker">{{
+            form.visitType ? form.visitType : "请选择跟进方式"
+          }}</view>
           <span class="iconfont">&#xe60f;</span>
         </picker>
       </div>
@@ -37,26 +45,56 @@
       <div>
         <text>工程跟进状态：</text>
         <picker @change="changeStatus" :range="statusList" range-key="nm">
-          <view class="picker">{{form.status?form.status:'请选择工程跟进状态'}}</view>
+          <view class="picker">{{
+            form.status ? form.status : "请选择工程跟进状态"
+          }}</view>
           <span class="iconfont">&#xe60f;</span>
+        </picker>
+      </div>
+      <div v-if="form.status=='项目中标'">
+        <span class="iconfont">&#xe69f;</span>
+        <text>实际采购时间：</text>
+        <picker
+          mode="date"
+          start="1980-01-01"
+          :value="actualdate"
+          @change="actualPurchaseChange"
+        >
+          <view class="picker">{{
+            form.actualPurchaseTime ? form.actualPurchaseTime : "请选择时间"
+          }}</view>
+          <span class="iconfont">&#xe611;</span>
         </picker>
       </div>
 
       <div>
         <text>下次跟进时间：</text>
-        <picker mode="date" start="1980-01-01" :value="date" @change="bindDateChange">
-          <view class="picker">{{form.nextVisitTime?form.nextVisitTime:'请选择时间'}}</view>
+        <picker
+          mode="date"
+          start="1980-01-01"
+          :value="date"
+          @change="bindDateChange"
+        >
+          <view class="picker">{{
+            form.nextVisitTime ? form.nextVisitTime : "请选择时间"
+          }}</view>
           <span class="iconfont">&#xe611;</span>
         </picker>
       </div>
 
       <div>
         <text>备注：</text>
-        <input placeholder="请输入备注信息" placeholder-style="color:#999;" @input="triggerNote" />
+        <input
+          placeholder="请输入备注信息"
+          placeholder-style="color:#999;"
+          @input="triggerNote"
+        />
       </div>
     </div>
     <div class="operate">
-      <button plain="true" :disabled="disabledBtn" @click="confirm">保存</button>
+      <button plain="true" :disabled="disabledBtn" @click="confirm">
+        保存
+      </button>
     </div>
   </div>
 </template>
@@ -66,29 +104,31 @@ export default {
   data() {
     return {
       date: "请选择时间",
+      actualdate: "请选择时间",
       form: {
         reportId: "",
         projectName: "",
         visitType: "",
         visitContent: "",
+        actualPurchaseTime: "",
         nextVisitTime: "",
         status: "",
         remark: "",
         visitUserId: "",
-        visitUserType: ""
+        visitUserType: "",
       },
       canPick: false,
-      disabledBtn:false,
+      disabledBtn: false,
       userInfo: {},
       query: {
         reportUserId: "",
-        flag: 1 //去重
+        flag: 1, //去重
       },
       visitTypeNm: "",
       statusNm: "",
-      followStyleList:[],
-      statusList:[],
-      proList: []
+      followStyleList: [],
+      statusList: [],
+      proList: [],
     };
   },
   onLoad(options) {
@@ -101,7 +141,7 @@ export default {
     console.log("followrecord add", this.form.reportId, this.form.projectName);
   },
   async onShow() {
-    this.disabledBtn=false
+    this.disabledBtn = false;
     this.proList = [];
     await this.getUserInfo();
     await this.getProjectList();
@@ -118,7 +158,7 @@ export default {
       status: "",
       remark: "",
       visitUserId: "",
-      visitUserType: ""
+      visitUserType: "",
     };
     this.proList = [];
   },
@@ -151,6 +191,9 @@ export default {
     bindDateChange(e) {
       this.form.nextVisitTime = e.mp.detail.value;
     },
+    actualPurchaseChange(e) {
+      this.form.actualPurchaseTime = e.mp.detail.value;
+    },
     triggeInput(e) {
       this.form.visitContent = e.mp.detail.value;
     },
@@ -159,14 +202,16 @@ export default {
     },
     verifyForm() {
       let arr = [{ projectName: "项目名称" }];
+      if(this.form.status=='项目中标')
+      arr = [{ projectName: "项目名称" },{actualPurchaseTime:"实际采购时间"}];
       return this.until.requireVerify(this.form, arr);
     },
-    async confirm() {
-      this.disabledBtn=true
+    async confirm() {     
+      this.disabledBtn = true;
       let msg = this.verifyForm();
       if (msg) {
         this.until.showToast(msg, "none", 400);
-        this.disabledBtn=false
+        this.disabledBtn = false;
       } else {
         let res = await this.api.sysFollowRecordSave(this.form);
         if (res === 0) {
@@ -179,15 +224,15 @@ export default {
     },
     async getFollowStyleList() {
       this.followStyleList = await this.api.getBaseDictionaryList({
-        cd: "visitType"
+        cd: "visitType",
       });
     },
     async getStatusList() {
       this.statusList = await this.api.getBaseDictionaryList({
-        cd: "visitStatus"
+        cd: "visitStatus",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -70,6 +70,7 @@ export default {
       if (this.userInfo) {
         this.apprParam.reportChecker = this.userInfo.realName;
         this.apprParam.userId = this.userInfo.userId;
+        this.apprParam.reportCheckerId = this.userInfo.userId;
         this.apprParam.userType = this.userInfo.userType;
         this.apprParam.saleType =
           this.userInfo.saleType && this.userInfo.saleType !== "null"

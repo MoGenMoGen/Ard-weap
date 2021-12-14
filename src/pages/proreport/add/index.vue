@@ -49,7 +49,14 @@
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>工程所在区域：</text>
-          <div class="addr">
+          <!-- 我方业务人员报备的项目为埃瑞德公司直采项目 -->
+          <div
+            class="addr"
+            v-if="userInfo.userType == 1 || userInfo.userType == 3"
+          >
+            埃瑞德
+          </div>
+          <div class="addr" v-else>
             <addr-select
               @changeAddr="changeAddr"
               :disabled="disabled"
@@ -79,6 +86,11 @@
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
+          <text>报备单位：</text>
+          <input type="text" v-model="form.corpName" disabled />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
           <text>申报时间：</text>
           <picker
             mode="date"
@@ -87,10 +99,10 @@
             @change="reportDateChange"
           >
             <view class="picker">{{ reportTime }}</view>
-            <span class="iconfont">&#xe611;</span>
+            <!-- <span class="iconfont">&#xe611;</span> -->
           </picker>
         </div>
-        <div>
+        <div v-if="form.saleName">
           <span class="iconfont">&#xe69f;</span>
           <text>经销商名称：</text>
           <!-- 赋值自己 -->
@@ -101,7 +113,7 @@
             :disabled="canPicker"
           >
             <view class="picker">{{ form.saleName ? form.saleName : "" }}</view>
-            <span class="iconfont">&#xe60f;</span>
+            <!-- <span class="iconfont">&#xe60f;</span> -->
           </picker>
         </div>
         <div>
@@ -215,7 +227,7 @@
           <picker
             mode="date"
             :value="form.projectOpenTime"
-            start="1980-01-01"
+            :start="currentDate"
             @change="openDateChange"
           >
             <view class="picker">{{
@@ -240,7 +252,7 @@
           <text>预采时间：</text>
           <picker
             mode="date"
-            start="1980-01-01"
+            :start="currentDate"
             :value="form.planPurchaseTime"
             @change="planPurchaseChange"
           >
@@ -298,6 +310,16 @@
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
+          <text>采购方公司：</text>
+          <input
+            type="text"
+            v-model="form.purchaseCompany"
+            placeholder="请输入采购方公司"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
           <text>采购方式：</text>
           <radio-group class="radio-group" @change="purseModeChange">
             <label class="radio" v-for="(item, index) in buyModes" :key="index">
@@ -323,6 +345,16 @@
             }}</view>
             <span class="iconfont">&#xe60f;</span>
           </picker>
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>单位信息：</text>
+          <input
+            type="text"
+            v-model="unitForm.unitInfo"
+            placeholder="请输入单位信息"
+            placeholder-style="color:#999;"
+          />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
@@ -488,9 +520,12 @@
 
 <script>
 import addrSelect from "@/components/addrSelect";
+import moment from "moment";
 export default {
   data() {
     return {
+      currentDate: moment().format("YYYY-MM-DD"),
+      userInfo: "", //用户信息
       compName: "",
       id: "", //修改报备的时候传值的Id
       reportTime: "",
@@ -552,6 +587,7 @@ export default {
       saleList: [],
       relsArr: [
         { nm: "unitType", key: "单位身份：", value: "投资方", required: true },
+        { nm: "unitInfo", key: "单位信息：", value: "", required: true },
         {
           nm: "unitName",
           key: "公司名称：",
@@ -588,6 +624,7 @@ export default {
         projectAreaName: "",
         signDate: "", //签约时间
         projectFollowMan: "", //报备人
+        corpName: "", //报备单位
         saleName: "",
         isOutTown: "", //默认选中第一个
         leaderPost: "",
@@ -604,6 +641,8 @@ export default {
         actualPurchaseTime: "",
         remark: "",
         purchaseModel: "", //默认选中第一个
+        purchaseMode: "",
+        purchaseCompany: "",
         mainTarget: "",
         decideName: "",
         saleType: "", //经销商类别
@@ -614,6 +653,7 @@ export default {
       unitForm: {
         unitType: "",
         unitName: "",
+        unitInfo: "",
         unitLeader: "",
         unitLinkPhone: "",
         expectSucceedPercent: "",
@@ -675,6 +715,7 @@ export default {
       projectAreaName: "",
       signDate: "", //签约时间
       projectFollowMan: "", //报备人
+      corpName: "",
       saleName: "",
       isOutTown: "",
       leaderPost: "",
@@ -691,6 +732,8 @@ export default {
       actualPurchaseTime: "",
       remark: "",
       purchaseModel: "",
+      purchaseMode: "",
+      purchaseCompany: "",
       mainTarget: "",
       decideName: "",
       reportType: 1, //工装报备
@@ -717,20 +760,25 @@ export default {
     this.searchShow = false;
   },
   onLoad(options) {
+    moment.locale("zh-cn");
     this.id = options.id && options.id !== "undefined" ? options.id : "";
   },
   async onShow() {
+    let { year, month, day, hour, minite } = this.until.formatDate();
+    this.reportTime = `${year}-${month}-${day} ${hour}:${minite}`;
     this.unitFormList = [];
     // console.log(this.unitFormList)
     this.disabledBtn = false;
     await this.getUserInfo();
+    this.form.corpName = this.userInfo.agentInfoName;
+
     //我方业务人员报备的项目为埃瑞德公司直采项目，直采项目异地工程选项默认为否
     if (this.userInfo.userType == 1 || this.userInfo.userType == 3) {
       this.$refs.addr.setAddr("埃瑞德");
       this.form.projectAreaName = "埃瑞德";
       this.form.projectAreaCode = "999999";
       this.until.seSave("proAreaName", this.form.projectAreaName);
-      this.until.seSave("proAreaCode", this.form.projectAreaCode);
+      this.until.seSave("proAreaCo  de", this.form.projectAreaCode);
 
       this.form.isOutTown = 0;
       this.items[0].checked = true;
@@ -745,8 +793,7 @@ export default {
     if (this.id) {
       await this.getReportInfo();
     }
-    let { year, month, day, hour, minite } = this.until.formatDate();
-    this.reportTime = `${year}-${month}-${day} ${hour}:${minite}`;
+
     // let areaName = this.until.seGet("proAreaName");
     // if (areaName) {
     //   this.form.projectAreaName = areaName;
@@ -809,6 +856,14 @@ export default {
           item.checked = false;
         }
         this.$set(this.buyItems, index, item);
+      });
+      this.buyModes.forEach((item, index) => {
+        if (index == this.form.purchaseMode) {
+          item.checked = true;
+        } else {
+          item.checked = false;
+        }
+        this.$set(this.buyModes, index, item);
       });
 
       switch (this.form.projectStatus) {
@@ -934,7 +989,7 @@ export default {
     },
     purseModeChange(e) {
       //需要与后端约定好字段
-      // this.form.purchaseModel = e.mp.detail.value;
+      this.form.purchaseMode = e.mp.detail.value;
       this.buyModes.forEach((item, index) => {
         if (item.name === e.mp.detail.value) {
           item.checked = true;
@@ -1009,7 +1064,7 @@ export default {
     },
     async getUserInfo() {
       this.userInfo = await this.api.getSysUserInfo();
-      // console.log(this.userInfo);
+      console.log(this.userInfo);
       if (this.userInfo.agentInfoId) {
         console.log("true");
         this.form.saleId = this.userInfo.agentInfoId;
@@ -1017,8 +1072,9 @@ export default {
         delete this.form.saleId;
       }
       // console.log(this.form);
-      if (this.userInfo.agentInfoName) {
-        this.form.saleName = this.userInfo.agentInfoName;
+      if (this.userInfo.corpName) {
+        // this.form.saleName = this.userInfo.agentInfoName;
+        this.form.saleName = this.userInfo.corpName;
         this.canPicker = true;
       } else {
         this.canPicker = false;
@@ -1084,8 +1140,10 @@ export default {
     },
     verifyForm() {
       let arr = [
-        { projectAreaName: "所在区域" },
-        { projectAddress: "详细地址" },
+        { projectName: "工程名称" },
+        { projectType: "工程类型" },
+        { projectAreaName: "工程所在区域" },
+        { projectAddress: "工程详细地址" },
         { projectFollowMan: "报备人" },
         // { reportTime: "申报时间" },
         { saleName: "经销商名称" },
@@ -1093,8 +1151,7 @@ export default {
         { projectLeader: "项目负责人" },
         { leaderPost: "职务" },
         { leaderLinkPhone: "联系电话" },
-        { projectName: "工程名称" },
-        { projectType: "工程类型" },
+
         // { totalInvestAmount: "总投资额" },
         { projectStatus: "工程现状" },
         { mainProduct: "主要产品类型" },
@@ -1103,6 +1160,8 @@ export default {
         { planPurchaseTime: "预采时间" },
         { remark: "技术优势描述" },
         { purchaseModel: "采购模式" },
+        { purchaseCompany: "采购方公司" },
+        { purchaseMode: "采购方式" },
       ];
 
       return this.until.requireVerify(this.form, arr);
@@ -1110,6 +1169,7 @@ export default {
     verifyUnitRequire() {
       let arr = [
         { unitType: "单位身份" },
+        { unitInfo: "单位信息" },
         { unitName: "公司名称" },
         { unitLeader: "负责人姓名" },
         { unitLinkPhone: "联系电话" },
@@ -1129,6 +1189,7 @@ export default {
       if (
         this.unitForm.unitType === "" &&
         this.unitForm.unitName === "" &&
+        this.unitForm.unitInfo === "" &&
         this.unitForm.unitLeader === "" &&
         this.unitForm.unitLinkPhone === "" &&
         this.unitForm.expectSucceedPercent === ""
@@ -1322,8 +1383,8 @@ export default {
           this.until.showToast(msg, "none", 400);
           this.disabledBtn = false;
           return;
-        } else if (this.unitFormList.length === 0) {
-          this.until.showToast("请添加相关单位", "none", 400);
+        } else if (this.unitFormList.length < 2) {
+          this.until.showToast("请添加至少2条相关单位", "none", 400);
           this.disabledBtn = false;
           return;
         } else {

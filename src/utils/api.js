@@ -354,6 +354,27 @@ class api {
       });
     });
   }
+  // 更新报备信息
+  sysReportInfoEdit(data){
+    let header = {
+      "yui3-token": wx.getStorageSync("ilike-token"),
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+
+    return new Promise((resolve, reject) => {
+      post("/crm/report/api/upd", data, header).then(res => {
+        wx.showToast({
+          title: "操作成功",
+          icon: "success",
+          duration: 500
+        });
+
+        // setTimeout(() => {
+          resolve(res);
+        // }, 1000);
+      });
+    });
+  }
   //得到用户信息
   getSysUserInfo() {
     let header = {

@@ -22,7 +22,7 @@
             <text>新建工程报备</text>
           </div>
           <div class="new-item" @click="toNewHomeReport">
-            <img :src="home" mode="widthFix" alt />
+            <img :src="home" mode="widthFix" alt />         
             <text>新建家装报备</text>
           </div>
         </div>
@@ -33,7 +33,8 @@
             <img :src="proreport" mode="widthFix" alt />
             <text>项目报备</text>
           </div>
-          <div @click="toPage('../opensea/main')">
+          <!-- 经销商不显示公海 -->
+          <div @click="toPage('../opensea/main')" v-if="userInfo.userType!=2">
             <img :src="opensea" mode="widthFix" alt />
             <text>公海</text>
           </div>
@@ -106,6 +107,7 @@ export default {
               //直接得到用户信息
               that.until.seSave("ilike-token", res.data.token);
               that.userInfo = res.data.userInfo;
+              console.log(111,that.userInfo);
               that.getImgUrl();
             }
           });

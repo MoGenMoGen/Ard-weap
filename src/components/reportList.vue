@@ -35,6 +35,11 @@
           <span>报备类型：</span>
           <span>{{item.reportType===1?'工程报备':'家装报备'}}</span>
         </div>
+        <div v-if="item.annotation&&(item.reportResult==='一报'||item.reportResult==='二报' ||item.reportResult==='三报')">
+          <span>批注：</span>
+          <span>{{item.annotation}}</span>
+        </div>
+
         <div class="set" v-if="userId===item.reportUserId">
           <p v-if="item.reportResult==='待提交' || item.reportResult==='待区域负责人审核'  || item.reportResult==='待审核' || item.reportResult === '待省代审核'" @click.stop="toCancel(item.id)">取消</p>
           <p

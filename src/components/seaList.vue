@@ -11,6 +11,10 @@
           <span>{{item.projectName}}</span>
         </div>
         <div>
+          <span>报备单位：</span>
+          <span v-if="item.cropName">{{item.corpName}}</span>
+        </div>
+        <div>
           <span>报备时间：</span>
           <span>{{item.reportTime}}</span>
         </div>

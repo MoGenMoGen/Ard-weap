@@ -232,6 +232,7 @@ export default {
     },
     async getUserInfo() {
       this.userInfo = await this.api.getSysUserInfo();
+      console.log('userInfo',this.userInfo);
       this.form.userId = this.userInfo.userId;
       this.form.userType = this.userInfo.userType;
       if (this.userInfo.userType === 2) {
