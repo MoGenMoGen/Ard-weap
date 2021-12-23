@@ -1,0 +1,30 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/proreport/add/main",
+          "pathName": "pages/proreport/add/main",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/proreport/list/main",
+          "pathName": "pages/proreport/list/main",
+          "query": "type=%E9%A1%B9%E7%9B%AE%E6%8A%A5%E5%A4%87",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

@@ -397,7 +397,7 @@
         </div>
       </div>
       <div class="btn">
-        <button plain="true" @click="addUnitList(true)">+ 添加相关单位</button>
+        <button plain="true" @click="addUnitList(true,true)">+ 添加相关单位</button>
       </div>
       <!-- 相关单位 -->
       <div class="rels">
@@ -774,7 +774,7 @@ export default {
 
     //我方业务人员报备的项目为埃瑞德公司直采项目，直采项目异地工程选项默认为否
     if (this.userInfo.userType == 1 || this.userInfo.userType == 3) {
-      this.$refs.addr.setAddr("埃瑞德");
+      // this.$refs.addr.setAddr("埃瑞德");
       this.form.projectAreaName = "埃瑞德";
       this.form.projectAreaCode = "999999";
       this.until.seSave("proAreaName", this.form.projectAreaName);
@@ -1146,7 +1146,7 @@ export default {
         { projectAddress: "工程详细地址" },
         { projectFollowMan: "报备人" },
         // { reportTime: "申报时间" },
-        { saleName: "经销商名称" },
+
         { isOutTown: "异地工程" },
         { projectLeader: "项目负责人" },
         { leaderPost: "职务" },
@@ -1163,6 +1163,10 @@ export default {
         { purchaseCompany: "采购方公司" },
         { purchaseMode: "采购方式" },
       ];
+      if(this.form.saleName){
+        arr.splice(5,0,{ saleName: "经销商名称" })
+      }
+
 
       return this.until.requireVerify(this.form, arr);
     },
@@ -1185,7 +1189,7 @@ export default {
       this.unitFormList.splice(index, 1);
     },
     //添加相关单位
-    addUnitList(handle) {
+    addUnitList(handle,flag) {
       if (
         this.unitForm.unitType === "" &&
         this.unitForm.unitName === "" &&
@@ -1196,6 +1200,7 @@ export default {
       ) {
         return true;
       }
+
 
       //判断必填字段
       //存在相同公司
@@ -1209,19 +1214,25 @@ export default {
       //   return;
       // } else {
       let res = this.verifyUnitRequire();
+      console.log(7777,res);
       if (res) {
-        this.until.showToast(res, "none", 400);
-        return false;
-      } else {
-        let regPhoneUnit = this.reg.checkPhone(this.unitForm.unitLinkPhone);
-        if (regPhoneUnit !== "ok") {
-          this.until.showToast(
-            "请在相关单位中填写正确的手机号码格式",
-            "none",
-            500
-          );
+        if(!this.id||flag==true){
+          this.until.showToast(res, "none", 400);
           return false;
         }
+      } else {
+        let regPhoneUnit = this.reg.checkPhone(this.unitForm.unitLinkPhone);
+        if(regPhoneUnit!=''||!this.id||flag==true){
+          if (regPhoneUnit !== "ok") {
+            this.until.showToast(
+              "请在相关单位中填写正确的手机号码格式",
+              "none",
+              500
+            );
+            return false;
+          }
+        }
+
         // console.log("相关单位");
 
         this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm)));
@@ -1292,6 +1303,7 @@ export default {
       return msg;
     },
     async save() {
+      console.log(this.form.unitList);
       this.disabledBtn = true;
       let competeList = [];
 
@@ -1329,6 +1341,7 @@ export default {
         setTimeout(() => {
           this.disabledBtn = false;
         }, 2000);
+        console.log(111);
         if (this.moneyCheck()) {
           this.until.showToast(this.moneyCheck(), "none", 400);
           return;
