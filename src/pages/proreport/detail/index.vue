@@ -12,7 +12,7 @@
           type="text"
           v-model="commit.annotation"
           placeholder="请输入批注"
-          style="border: 1px solid #ccc;width: 86%;box-sizing: border-box;padding: 0 20rpx;margin: 74rpx auto;"
+          style="border: 1px solid #ccc; width: 86%; box-sizing: border-box;padding: 0 20rpx; margin: 74rpx auto;"
         />
         <div class="confirm" @click="confirm">确定</div>
       </div>
@@ -61,13 +61,16 @@
     </div>
     <!-- 基本信息 -->
     <div class="regoin" style="position: relative">
-      <div v-if="detailData.annotation" style="color: red; position: absolute; top: 100rpx; right: 40rpx">
+      <!-- <div
+        v-if="detailData.annotation"
+        style="color: red; position: absolute; top: 100rpx; right: 40rpx"
+      >
         {{ detailData.annotation }}
-      </div>
+      </div> -->
       <div v-for="item in regoinList" :key="item.nm">
         <span v-if="item.required" class="iconfont">&#xe69f;</span>
         <div>{{ item.key }}</div>
-        <div>{{ item.value }}</div>
+        <div :style="{'color':(item.nm=='annotation'?'red':'')}">{{ item.value }}</div>
       </div>
     </div>
     <!-- 相关单位 -->
@@ -209,8 +212,8 @@ export default {
   data() {
     return {
       detailData: {}, //用于新增/修改批注
-      commit:{
-        annotation:""//提交批注参数  
+      commit: {
+        annotation: "", //提交批注参数
       },
       showMask: false,
       id: "",
@@ -384,6 +387,12 @@ export default {
           value: "上个经销商",
           required: false,
         },
+        {
+          nm: "annotation",
+          key: "批注",
+          value: "批注",
+          required: false,
+        },
       ],
       relsArr: [
         { nm: "unitType", key: "单位身份：", value: "投资方", required: true },
@@ -503,7 +512,7 @@ export default {
       console.log("项目信息");
       let res = await this.api.getSysReportInfo(this.id);
       this.detailData = await this.api.getSysReportInfo(this.id);
-      this.commit.annotation=this.detailData.annotation;
+      this.commit.annotation = this.detailData.annotation;
       // console.log('报备审核111111',this.userInfo.userId ,res.groupLeaderId);
       console.log("======================", this.detailData);
       this.reportStatus = res.reportStatus;
@@ -705,10 +714,14 @@ export default {
     async confirm() {
       this.showMask = false;
       console.log(this.detailData);
-      this.api.sysReportInfoEdit({annotation: this.commit.annotation,
-id: this.detailData.id}).then((res) => {
-        this.getData();
-      });
+      this.api
+        .sysReportInfoEdit({
+          annotation: this.commit.annotation,
+          id: this.detailData.id,
+        })
+        .then((res) => {
+          this.getData();
+        });
     },
   },
 };

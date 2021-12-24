@@ -6,7 +6,7 @@
           <span class="iconfont" @click="closeSearch">&#xe7c6;</span>
           <input
             placeholder="请输入联系人"
-            v-model="compName"
+            v-model.lazy="compName"
             maxlength="100"
           />
           <div class="list" v-if="linkedList.length > 0">
@@ -27,7 +27,7 @@
           <text>工程名称：</text>
           <input
             type="text"
-            v-model="form.projectName"
+            v-model.lazy="form.projectName"
             placeholder="请输入工程名称"
             placeholder-style="color:#999;"
           />
@@ -69,7 +69,7 @@
           <text>工程详细地址：</text>
           <input
             type="text"
-            v-model="form.projectAddress"
+            v-model.lazy="form.projectAddress"
             placeholder="请输入工程详细地址"
             placeholder-style="color:#999;"
           />
@@ -79,7 +79,7 @@
           <text>报备人：</text>
           <input
             type="text"
-            v-model="form.projectFollowMan"
+            v-model.lazy="form.projectFollowMan"
             placeholder="请输入报备人"
             placeholder-style="color:#999;"
           />
@@ -87,7 +87,7 @@
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>报备单位：</text>
-          <input type="text" v-model="form.corpName" disabled />
+          <input type="text" v-model.lazy="form.corpName" disabled />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
@@ -143,7 +143,7 @@
           <text>职务：</text>
           <input
             type="text"
-            v-model="form.leaderPost"
+            v-model.lazy="form.leaderPost"
             placeholder="请输入职务"
             placeholder-style="color:#999;"
           />
@@ -152,9 +152,10 @@
           <span class="iconfont">&#xe69f;</span>
           <text>联系电话：</text>
           <input
-            type="number"
+            type="text"
             maxlength="11"
-            v-model="form.leaderLinkPhone"
+            v-model.lazy="form.leaderLinkPhone"
+            @change="changetel"
             placeholder="请输入联系电话"
             placeholder-style="color:#999;"
           />
@@ -241,7 +242,7 @@
           <text>预采金额：</text>
           <input
             type="number"
-            v-model="form.planPurchaseAmount"
+            v-model.lazy="form.planPurchaseAmount"
             placeholder="请输入预计采购金额"
             placeholder-style="color:#999;"
           />
@@ -293,7 +294,7 @@
           <text>我方关系情况及技术优势描述：</text>
           <textarea
             auto-height
-            v-model="form.remark"
+            v-model.lazy="form.remark"
             placeholder="请输入我方关系情况及技术优势描述"
             placeholder-style="color:#999;"
           />
@@ -313,7 +314,7 @@
           <text>采购方公司：</text>
           <input
             type="text"
-            v-model="form.purchaseCompany"
+            v-model.lazy="form.purchaseCompany"
             placeholder="请输入采购方公司"
             placeholder-style="color:#999;"
           />
@@ -333,71 +334,140 @@
       </div>
       <div class="info">
         <span></span>
-        <span>工程项目信息来源</span>
+        <span>工程项目信息来源一</span>
       </div>
       <div class="conect">
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>单位身份：</text>
-          <picker @change="changeUnitType" :range="unitList" range-key="nm">
+          <text>单位身份一：</text>
+          <picker @change="changeUnitType1" :range="unitList" range-key="nm">
             <view class="picker">{{
-              unitTypeNm ? unitTypeNm : "请选择单位身份"
+              unitTypeNm1 ? unitTypeNm1 : "请选择单位身份"
             }}</view>
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>单位信息：</text>
+          <text>单位信息一：</text>
           <input
             type="text"
-            v-model="unitForm.unitInfo"
+            v-model.lazy="unitForm1.unitInfo"
             placeholder="请输入单位信息"
             placeholder-style="color:#999;"
           />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>公司名称：</text>
+          <text>公司名称一：</text>
           <input
             type="text"
-            v-model="unitForm.unitName"
+            v-model.lazy="unitForm1.unitName"
             placeholder="请输入公司名称"
             placeholder-style="color:#999;"
           />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>负责人姓名：</text>
+          <text>负责人姓名一：</text>
           <input
             type="text"
-            v-model="unitForm.unitLeader"
+            v-model.lazy="unitForm1.unitLeader"
             placeholder="请输入负责人姓名"
             placeholder-style="color:#999;"
           />
         </div>
         <div>
           <span class="iconfont">&#xe69f;</span>
-          <text>联系电话：</text>
+          <text>联系电话一：</text>
           <input
-            type="number"
+            type="text"
             maxlength="11"
-            v-model="unitForm.unitLinkPhone"
+            @change="changetel1"
+            v-model.lazy="unitForm1.unitLinkPhone"
             placeholder="请输入联系电话"
             placeholder-style="color:#999;"
           />
         </div>
         <div>
-          <text>预计成功率：</text>
+          <text>预计成功率一：</text>
+          <input
+            type="number"
+            v-model.lazy="unitForm1.expectSucceedPercent"
+            placeholder-style="color:#999;"
+          />%
+        </div>
+      </div>
+      <div class="info" v-if="showUnitForm2">
+        <span></span>
+        <span>工程项目信息来源二</span>
+      </div>
+      <div class="conect" v-if="showUnitForm2">
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>单位身份二：</text>
+          <picker @change="changeUnitType2" :range="unitList" range-key="nm">
+            <view class="picker">{{
+              unitTypeNm2 ? unitTypeNm2 : "请选择单位身份"
+            }}</view>
+            <span class="iconfont">&#xe60f;</span>
+          </picker>
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>单位信息二：</text>
           <input
             type="text"
-            v-model="unitForm.expectSucceedPercent"
+            v-model.lazy="unitForm2.unitInfo"
+            placeholder="请输入单位信息"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>公司名称二：</text>
+          <input
+            type="text"
+            v-model.lazy="unitForm2.unitName"
+            placeholder="请输入公司名称"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>负责人姓名二：</text>
+          <input
+            type="text"
+            v-model.lazy="unitForm2.unitLeader"
+            placeholder="请输入负责人姓名"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <span class="iconfont">&#xe69f;</span>
+          <text>联系电话二：</text>
+          <input
+            type="text"
+            maxlength="11"
+            v-model.lazy="unitForm2.unitLinkPhone"
+            @change="changetel2"
+            placeholder="请输入联系电话"
+            placeholder-style="color:#999;"
+          />
+        </div>
+        <div>
+          <text>预计成功率二：</text>
+          <input
+            type="number"
+            v-model.lazy="unitForm2.expectSucceedPercent"
             placeholder-style="color:#999;"
           />%
         </div>
       </div>
       <div class="btn">
-        <button plain="true" @click="addUnitList(true,true)">+ 添加相关单位</button>
+        <button plain="true" @click="addUnitList(true, true)">
+          + 添加相关单位
+        </button>
       </div>
       <!-- 相关单位 -->
       <div class="rels">
@@ -410,7 +480,7 @@
           <div
             class="final-item"
             v-for="(item, index1) in itemRel.relsArr"
-            :key="item.nm"
+            :key="index1"
           >
             <span v-if="item.required" class="iconfont">&#xe69f;</span>
             <div>{{ item.key }}</div>
@@ -427,7 +497,7 @@
           <text>主攻对象：</text>
           <input
             type="text"
-            v-model="form.mainTarget"
+            v-model.lazy="form.mainTarget"
             placeholder-style="color:#999;"
             placeholder="请输入主攻对象"
           />
@@ -436,7 +506,7 @@
           <text>决策者：</text>
           <input
             type="text"
-            v-model="form.decideName"
+            v-model.lazy="form.decideName"
             placeholder-style="color:#999;"
             placeholder="请输入决策者"
           />
@@ -452,7 +522,7 @@
             <text>名称：</text>
             <input
               type="text"
-              v-model="formOne.name"
+              v-model.lazy="formOne.name"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手名称"
             />
@@ -461,7 +531,7 @@
             <text>优势：</text>
             <input
               type="text"
-              v-model="formOne.remark"
+              v-model.lazy="formOne.remark"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手优势"
             />
@@ -472,7 +542,7 @@
             <text>名称：</text>
             <input
               type="text"
-              v-model="formTwo.name"
+              v-model.lazy="formTwo.name"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手名称"
             />
@@ -481,7 +551,7 @@
             <text>优势：</text>
             <input
               type="text"
-              v-model="formTwo.remark"
+              v-model.lazy="formTwo.remark"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手优势"
             />
@@ -492,7 +562,7 @@
             <text>名称：</text>
             <input
               type="text"
-              v-model="formThree.name"
+              v-model.lazy="formThree.name"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手名称"
             />
@@ -501,7 +571,7 @@
             <text>优势：</text>
             <input
               type="text"
-              v-model="formThree.remark"
+              v-model.lazy="formThree.remark"
               placeholder-style="color:#999;"
               placeholder="请输入竞争对手优势"
             />
@@ -537,7 +607,9 @@ export default {
       projectTypeList: [],
       mainProductTypeList: [],
       projectStatusNm: "",
-      unitTypeNm: "",
+      unitTypeNm1: "",
+      unitTypeNm2: "",
+      showUnitForm2: true,
       showBtn: true,
       proStatusList: [
         {
@@ -650,7 +722,15 @@ export default {
         unitList: [],
         competeList: [],
       },
-      unitForm: {
+      unitForm1: {
+        unitType: "",
+        unitName: "",
+        unitInfo: "",
+        unitLeader: "",
+        unitLinkPhone: "",
+        expectSucceedPercent: "",
+      },
+      unitForm2: {
         unitType: "",
         unitName: "",
         unitInfo: "",
@@ -697,7 +777,14 @@ export default {
     this.items.map((item) => (item.checked = false));
     this.buyItems.map((item) => (item.checked = false));
     this.mainProductTypeList = [];
-    this.unitForm = {
+    this.unitForm1 = {
+      unitType: "",
+      unitName: "",
+      unitLeader: "",
+      unitLinkPhone: "",
+      expectSucceedPercent: "",
+    };
+    this.unitForm2 = {
       unitType: "",
       unitName: "",
       unitLeader: "",
@@ -769,7 +856,14 @@ export default {
     this.unitFormList = [];
     // console.log(this.unitFormList)
     this.disabledBtn = false;
-    await this.getUserInfo();
+    this.getUserInfo();
+    if (this.mainProductTypeList.length == 0) {
+      await this.getMainProductTypeDic();
+    }
+    if (this.id) {
+      this.showUnitForm2 = false;
+      await this.getReportInfo();
+    }
     this.form.corpName = this.userInfo.agentInfoName;
 
     //我方业务人员报备的项目为埃瑞德公司直采项目，直采项目异地工程选项默认为否
@@ -786,13 +880,8 @@ export default {
     }
     await this.getLinkedList();
     await this.getProjectTypeDic();
-    if (this.mainProductTypeList.length == 0) {
-      await this.getMainProductTypeDic();
-    }
+
     await this.getSaleNameList();
-    if (this.id) {
-      await this.getReportInfo();
-    }
 
     // let areaName = this.until.seGet("proAreaName");
     // if (areaName) {
@@ -808,12 +897,28 @@ export default {
   },
 
   methods: {
+    changetel() {
+      this.form.leaderLinkPhone = this.form.leaderLinkPhone.replace(/\D/g, "");
+    },
+    changetel1() {
+      this.unitForm1.unitLinkPhone = this.unitForm1.unitLinkPhone.replace(
+        /\D/g,
+        ""
+      );
+    },
+    changetel2() {
+      this.unitForm2.unitLinkPhone = this.unitForm2.unitLinkPhone.replace(
+        /\D/g,
+        ""
+      );
+    },
     async getReportInfo() {
       let res = await this.api.getSysReportInfo(this.id);
       this.form = this.until.remainLeftObjProp(this.form, res);
       // console.log(this.form)
-      this.$refs.addr.setAddr(this.form.projectAreaName);
-
+      if (this.userInfo.userType != 1 && this.userInfo.userType != 3) {
+        this.$refs.addr.setAddr(this.form.projectAreaName);
+      }
       // this.reportTime = this.form.reportTime.substring(0, 10);
 
       this.form.projectOpenTime = this.form.projectOpenTime
@@ -850,7 +955,7 @@ export default {
       //异地工程
 
       this.buyItems.forEach((item, index) => {
-        if (index == this.form.purchaseModel) {
+        if (item.name == this.form.purchaseModel) {
           item.checked = true;
         } else {
           item.checked = false;
@@ -858,7 +963,7 @@ export default {
         this.$set(this.buyItems, index, item);
       });
       this.buyModes.forEach((item, index) => {
-        if (index == this.form.purchaseMode) {
+        if (item.name == this.form.purchaseMode) {
           item.checked = true;
         } else {
           item.checked = false;
@@ -906,6 +1011,8 @@ export default {
       // console.log(this.form.unitList)
       if (this.form.unitList.length > 0) {
         this.unitFormList = this.form.unitList;
+        // console.log("detail222222", this.unitFormList);
+        // console.log(333333, this.relsArr);
         this.unitFormShowList = this.unitFormList.map((itemRel) => {
           this.relsArr.map((item) => {
             item.value = itemRel[item.nm];
@@ -941,29 +1048,28 @@ export default {
         });
       }
 
-      // console.log(this.unitFormList)
-      switch (this.unitForm.unitType) {
-        case 1:
-          this.unitTypeNm = "投资方";
-          break;
-        case 2:
-          this.unitTypeNm = "总包方";
-          break;
-        case 3:
-          this.unitTypeNm = "空调及安装方";
-          break;
-        case 4:
-          this.unitTypeNm = "监理方";
-          break;
-        case 5:
-          this.unitTypeNm = "装饰设计方";
-          break;
-        case 6:
-          this.unitTypeNm = "其它相关方";
-          break;
-        default:
-          break;
-      }
+      // switch (this.unitForm.unitType) {
+      //   case 1:
+      //     this.unitTypeNm = "投资方";
+      //     break;
+      //   case 2:
+      //     this.unitTypeNm = "总包方";
+      //     break;
+      //   case 3:
+      //     this.unitTypeNm = "空调及安装方";
+      //     break;
+      //   case 4:
+      //     this.unitTypeNm = "监理方";
+      //     break;
+      //   case 5:
+      //     this.unitTypeNm = "装饰设计方";
+      //     break;
+      //   case 6:
+      //     this.unitTypeNm = "其它相关方";
+      //     break;
+      //   default:
+      //     break;
+      // }
     },
     outTownChange(e) {
       this.form.isOutTown = e.mp.detail.value;
@@ -1038,11 +1144,17 @@ export default {
       let index = e.mp.detail.value;
       this.form.saleName = this.saleList[index].name;
     },
-    changeUnitType(e) {
+    changeUnitType1(e) {
       // console.log(this.unitForm)
       let index = e.mp.detail.value;
-      this.unitTypeNm = this.unitList[index].nm;
-      this.unitForm.unitType = this.unitList[index].id;
+      this.unitTypeNm1 = this.unitList[index].nm;
+      this.unitForm1.unitType = this.unitList[index].id;
+    },
+    changeUnitType2(e) {
+      // console.log(this.unitForm)
+      let index = e.mp.detail.value;
+      this.unitTypeNm2 = this.unitList[index].nm;
+      this.unitForm2.unitType = this.unitList[index].id;
     },
     changeProjectStatus(e) {
       let index = e.mp.detail.value;
@@ -1062,8 +1174,9 @@ export default {
       let data = await this.api.getSysCustomerList(param);
       this.linkedList = data ? data : [];
     },
-    async getUserInfo() {
-      this.userInfo = await this.api.getSysUserInfo();
+    getUserInfo() {
+      // this.userInfo = await this.api.getSysUserInfo();
+      this.userInfo = this.until.seGet("userInfo");
       console.log(this.userInfo);
       if (this.userInfo.agentInfoId) {
         console.log("true");
@@ -1096,6 +1209,10 @@ export default {
     async getMainProductTypeDic() {
       this.mainProductTypeList = await this.api.getBaseDictionaryList({
         cd: "mainProductType",
+      });
+      this.mainProductTypeList.forEach((item, index) => {
+        item.checked = false;
+        this.$set(this.mainProductTypeList, index, item);
       });
     },
     async getSaleNameList() {
@@ -1163,23 +1280,33 @@ export default {
         { purchaseCompany: "采购方公司" },
         { purchaseMode: "采购方式" },
       ];
-      if(this.form.saleName){
-        arr.splice(5,0,{ saleName: "经销商名称" })
+      if (this.form.saleName) {
+        arr.splice(5, 0, { saleName: "经销商名称" });
       }
-
 
       return this.until.requireVerify(this.form, arr);
     },
-    verifyUnitRequire() {
-      let arr = [
-        { unitType: "单位身份" },
-        { unitInfo: "单位信息" },
-        { unitName: "公司名称" },
-        { unitLeader: "负责人姓名" },
-        { unitLinkPhone: "联系电话" },
-      ];
+    verifyUnitRequire(data, type) {
+      let arr = [];
+      if (type == 1) {
+        arr = [
+          { unitType: "单位身份一" },
+          { unitInfo: "单位信息一" },
+          { unitName: "公司名称一" },
+          { unitLeader: "负责人姓名一" },
+          { unitLinkPhone: "联系电话一" },
+        ];
+      } else if (type == 2) {
+        arr = [
+          { unitType: "单位身份二" },
+          { unitInfo: "单位信息二" },
+          { unitName: "公司名称二" },
+          { unitLeader: "负责人姓名二" },
+          { unitLinkPhone: "联系电话二" },
+        ];
+      }
 
-      return this.until.requireVerify(this.unitForm, arr);
+      return this.until.requireVerify(data, arr);
     },
     toPage(url) {
       this.until.aHref(url);
@@ -1187,104 +1314,160 @@ export default {
     //删除单位
     deletUnit(index) {
       this.unitFormList.splice(index, 1);
+      if (this.unitFormList == 0) {
+        this.showUnitForm2 = true;
+      }
     },
     //添加相关单位
-    addUnitList(handle,flag) {
-      if (
-        this.unitForm.unitType === "" &&
-        this.unitForm.unitName === "" &&
-        this.unitForm.unitInfo === "" &&
-        this.unitForm.unitLeader === "" &&
-        this.unitForm.unitLinkPhone === "" &&
-        this.unitForm.expectSucceedPercent === ""
-      ) {
-        return true;
-      }
-
+    addUnitList(handle, flag) {
+      // if (
+      //   this.unitForm1.unitType === "" &&
+      //   this.unitForm1.unitName === "" &&
+      //   this.unitForm1.unitInfo === "" &&
+      //   this.unitForm1.unitLeader === "" &&
+      //   this.unitForm1.unitLinkPhone === "" &&
+      //   this.unitForm1.expectSucceedPercent === ""
+      // ) {
+      //   return true;
+      // } else if (
+      //   this.showUnitForm2 &&
+      //   this.unitForm2.unitType === "" &&
+      //   this.unitForm2.unitName === "" &&
+      //   this.unitForm2.unitInfo === "" &&
+      //   this.unitForm2.unitLeader === "" &&
+      //   this.unitForm2.unitLinkPhone === "" &&
+      //   this.unitForm2.expectSucceedPercent === ""
+      // ) {
+      //   return true;
+      // }
 
       //判断必填字段
       //存在相同公司
-      let filters = this.unitFormList.filter(
-        (item) => item.unitName === this.unitForm.unitName
-      );
+      // let filters = this.unitFormList.filter(
+      //   (item) => item.unitName === this.unitForm.unitName
+      // );
       // console.log('添加相关单位2')
       //2019年10月23日 设计部门要求去掉判断
       // if (filters.length > 0) {
       //   this.until.showToast("不要添加已有的公司名称", "none", 500);
       //   return;
       // } else {
-      let res = this.verifyUnitRequire();
-      console.log(7777,res);
-      if (res) {
-        if(!this.id||flag==true){
-          this.until.showToast(res, "none", 400);
+      let flag1 = false; //校验信息来源一
+      // if (this.unitFormList.length == 0) flag = true;
+      if (this.unitFormList.length < 2) flag1 = true;
+      console.log("flag1", flag1, this.unitFormList.length);
+      let res1 = this.verifyUnitRequire(this.unitForm1, 1);
+      let res2 = "";
+      if (this.showUnitForm2 && !res1) {
+        res2 = this.verifyUnitRequire(this.unitForm2, 2);
+        console.log({ res2 });
+      }
+      console.log({ res1 });
+      // if (flag == true || flag1 == true) {
+      if (flag1 == true || handle) {
+        if (res1) {
+          this.until.showToast(res1, "none", 400);
+          console.log("unitform1", this.unitForm1, res1);
           return false;
-        }
-      } else {
-        let regPhoneUnit = this.reg.checkPhone(this.unitForm.unitLinkPhone);
-        if(regPhoneUnit!=''||!this.id||flag==true){
-          if (regPhoneUnit !== "ok") {
+        } else {
+          //填完必填项开始校验手机号
+          let regPhoneUnit1 = this.reg.checkPhone(this.unitForm1.unitLinkPhone);
+          if (regPhoneUnit1 !== "ok") {
             this.until.showToast(
-              "请在相关单位中填写正确的手机号码格式",
+              "请在信息来源一中填写正确的手机号码格式",
+              "none",
+              500
+            );
+            return false;
+          } else {
+            console.log(124234);
+          }
+        }
+      }
+      // if (flag == true && this.showUnitForm2) {
+      if (this.showUnitForm2) {
+        console.log(222);
+        if (res2) {
+          this.until.showToast(res2, "none", 400);
+          console.log("unitform2", this.unitForm2);
+          return false;
+        } else {
+          //填完必填项开始校验手机号
+          let regPhoneUnit2 = this.reg.checkPhone(this.unitForm2.unitLinkPhone);
+          if (regPhoneUnit2 !== "ok") {
+            this.until.showToast(
+              "请在信息来源二中填写正确的手机号码格式",
               "none",
               500
             );
             return false;
           }
         }
-
-        // console.log("相关单位");
-
-        this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm)));
-        // console.log(this.unitFormList)
-        this.unitFormShowList = this.unitFormList.map((itemRel) => {
-          this.relsArr.map((item) => {
-            item.value = itemRel[item.nm];
-            if (item.nm == "unitType") {
-              switch (itemRel[item.nm]) {
-                case 1:
-                  item.value = "投资方";
-                  break;
-                case 2:
-                  item.value = "总包方";
-                  break;
-                case 3:
-                  item.value = "空调及安装方";
-                  break;
-                case 4:
-                  item.value = "监理方";
-                  break;
-                case 5:
-                  item.value = "装饰设计方";
-                  break;
-                case 6:
-                  item.value = "其它相关方";
-                  break;
-                default:
-                  break;
-              }
-            }
-            if (item.nm == "expectSucceedPercent") {
-              item.value = `${item.value}%`;
-            }
-          });
-          itemRel.relsArr = JSON.parse(JSON.stringify(this.relsArr));
-        });
-
-        if (handle) {
-          this.until.showToast("添加成功", "success", 400);
-        }
-        setTimeout(() => {
-          this.unitForm = {
-            unitType: "",
-            unitName: "",
-            unitLeader: "",
-            unitLinkPhone: "",
-            expectSucceedPercent: "",
-          };
-          this.unitTypeNm = "";
-        }, 1000);
       }
+      // console.log("相关单位");
+      if (this.unitForm1.unitName)
+        this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm1)));
+
+      if (this.unitForm2.unitName) {
+        this.unitFormList.push(JSON.parse(JSON.stringify(this.unitForm2)));
+      }
+      // console.log(this.unitFormList)
+      this.unitFormShowList = this.unitFormList.map((itemRel) => {
+        this.relsArr.map((item) => {
+          item.value = itemRel[item.nm];
+          if (item.nm == "unitType") {
+            switch (itemRel[item.nm]) {
+              case 1:
+                item.value = "投资方";
+                break;
+              case 2:
+                item.value = "总包方";
+                break;
+              case 3:
+                item.value = "空调及安装方";
+                break;
+              case 4:
+                item.value = "监理方";
+                break;
+              case 5:
+                item.value = "装饰设计方";
+                break;
+              case 6:
+                item.value = "其它相关方";
+                break;
+              default:
+                break;
+            }
+          }
+          if (item.nm == "expectSucceedPercent") {
+            item.value = `${item.value}%`;
+          }
+        });
+        itemRel.relsArr = JSON.parse(JSON.stringify(this.relsArr));
+      });
+
+      // if (handle) {
+      //   this.until.showToast("添加成功", "success", 400);
+      // }
+      setTimeout(() => {
+        this.unitForm1 = {
+          unitType: "",
+          unitName: "",
+          unitLeader: "",
+          unitLinkPhone: "",
+          expectSucceedPercent: "",
+        };
+        this.unitTypeNm1 = "";
+        this.unitForm2 = {
+          unitType: "",
+          unitName: "",
+          unitLeader: "",
+          unitLinkPhone: "",
+          expectSucceedPercent: "",
+        };
+        this.unitTypeNm2 = "";
+        this.showUnitForm2 = false;
+      }, 1000);
       //}
       return true;
     },
@@ -1307,12 +1490,16 @@ export default {
       this.disabledBtn = true;
       let competeList = [];
 
-      let addSuccess = this.addUnitList(false);
+      let addSuccess = this.addUnitList(false, false);
+      console.log("save", addSuccess);
       if (addSuccess) {
         if (this.id) {
           this.form.id = this.id;
         }
-
+        if (this.moneyCheck()) {
+          this.until.showToast(this.moneyCheck(), "none", 400);
+          return;
+        }
         if (this.formOne.name) {
           competeList.push(this.formOne);
         }
@@ -1326,10 +1513,11 @@ export default {
         if (competeList.length > 0) {
           this.form.competeList = JSON.stringify(competeList);
         }
+
         this.unitFormList.map((item) => {
           delete item.relsArr;
         });
-        if (this.unitFormList.length > 0) {
+        if (this.unitFormList.length > 1) {
           this.form.unitList = JSON.stringify(this.unitFormList);
         }
         this.form.reportStatus = -2;
@@ -1342,18 +1530,15 @@ export default {
           this.disabledBtn = false;
         }, 2000);
         console.log(111);
-        if (this.moneyCheck()) {
-          this.until.showToast(this.moneyCheck(), "none", 400);
-          return;
-        }
 
         // console.log('保存成功')
         let res = await this.api.sysReportInfoSave(this.form);
+        this.showUnitForm2 = false;
         if (res) {
           wx.redirectTo({ url: "../list/main?type=项目报备" });
         }
 
-        this.disabledBtn = false;
+        // this.disabledBtn = false;
       } else {
         this.disabledBtn = false;
       }
@@ -1365,10 +1550,35 @@ export default {
       this.disabledBtn = true;
       let competeList = [];
       // debugger;
-      let addSuccess = this.addUnitList(false); //这里为什么要这样写？
+      let addSuccess = this.addUnitList(false, true); //这里为什么要这样写？
+      console.log("confirm", addSuccess);
       // console.log("addSuccess:" + addSuccess);
       // let addSuccess = true;
+
+      let msg = this.verifyForm();
+      let regPhone = this.reg.checkPhone(this.form.leaderLinkPhone);
       if (addSuccess) {
+        if (msg) {
+          this.until.showToast(msg, "none", 400);
+          this.disabledBtn = false;
+          return;
+        } else if (this.unitFormList.length < 2) {
+          this.until.showToast("请添加至少2条相关单位", "none", 400);
+          this.disabledBtn = false;
+          return;
+        } else if (regPhone !== "ok") {
+          this.until.showToast(
+            "请在项目报备中输入正确的手机号码格式",
+            "none",
+            400
+          );
+          this.disabledBtn = false;
+          return;
+        } else if (this.moneyCheck()) {
+          this.until.showToast(this.moneyCheck(), "none", 400);
+          return;
+        }
+
         if (this.id) {
           this.form.id = this.id;
         }
@@ -1391,45 +1601,19 @@ export default {
         });
         this.form.unitList = JSON.stringify(this.unitFormList);
 
-        let msg = this.verifyForm();
-        if (msg) {
-          this.until.showToast(msg, "none", 400);
+        this.form.reportStatus = 100;
+        // console.log(this.form)
+        setTimeout(() => {
           this.disabledBtn = false;
-          return;
-        } else if (this.unitFormList.length < 2) {
-          this.until.showToast("请添加至少2条相关单位", "none", 400);
-          this.disabledBtn = false;
-          return;
-        } else {
-          let regPhone = this.reg.checkPhone(this.form.leaderLinkPhone);
-          if (regPhone !== "ok") {
-            this.until.showToast(
-              "请在项目报备中输入正确的手机号码格式",
-              "none",
-              400
-            );
-            this.disabledBtn = false;
-            return;
-          } else {
-            this.form.reportStatus = 100;
-            // console.log(this.form)
-            setTimeout(() => {
-              this.disabledBtn = false;
-            }, 2000);
-            if (this.moneyCheck()) {
-              this.until.showToast(this.moneyCheck(), "none", 400);
-              return;
-            }
+        }, 2000);
 
-            // console.log('提交成功')
-            // console.log(this.form)
-            let res = await this.api.sysReportInfoSave(this.form);
-            if (res) {
-              wx.redirectTo({ url: "../list/main?type=项目报备" });
-            }
-          }
+        // console.log('提交成功')
+        // console.log(this.form)
+        let res = await this.api.sysReportInfoSave(this.form);
+        this.showUnitForm2 = false;
+        if (res) {
+          wx.redirectTo({ url: "../list/main?type=项目报备" });
         }
-        this.disabledBtn = false;
       } else {
         this.disabledBtn = false;
       }
