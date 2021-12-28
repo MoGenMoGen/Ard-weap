@@ -192,7 +192,7 @@ export default {
       this.form.nextVisitTime = e.mp.detail.value;
     },
     actualPurchaseChange(e) {
-      this.form.actualPurchaseTime = e.mp.detail.value;
+      this.$set(this.form,'actualPurchaseTime',e.mp.detail.value)
     },
     triggeInput(e) {
       this.form.visitContent = e.mp.detail.value;
