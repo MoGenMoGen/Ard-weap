@@ -2,7 +2,7 @@
   <div class="report-list">
     <div class="header">
       <div class="search">
-        <div v-if="type==='项目报备'">
+        <div v-if="type=='项目报备'">
           <span>报备类型</span>
           <picker @change="changeReportType" :range="reportTypeList" range-key="nm">
             <view class="picker">{{reportNm?reportNm:'请选择报备类型'}}</view>
@@ -222,8 +222,10 @@ export default {
       }
       let res = await this.api.getSysAllSaleNameList(param);
       res.map(item => {
-        this.agentList.push(item.crmAgentInfoVo);
+        // this.agentList.push(item.crmAgentInfoVo);
+        this.agentList.push(item);
       });
+      // console.log(11111,this.agentList);
     },
     toSearch() {
       this.list = [];
