@@ -151,7 +151,7 @@ export default {
         },
         {
           nm: "projectName",
-          key: "公司名称：",
+          key: "项目名称：",
           value: "宁波聚联科技有限公司",
           required: false
         },
@@ -180,6 +180,12 @@ export default {
           required: false
         },
         {
+          nm: "isCrossRegion",
+          key: "是否跨区：",
+          value: "",
+          required: false
+        },
+        {
           nm: "projectLeader",
           key: "联系人：",
           value: "张晓",
@@ -189,6 +195,18 @@ export default {
           nm: "leaderLinkPhone",
           key: "联系方式：",
           value: "12345678963",
+          required: false
+        },
+         {
+          nm: "infoSource",
+          key: "信息来源：",
+          value: "",
+          required: false
+        },
+          {
+          nm: "relateDesc",
+          key: "关系描述：",
+          value: "",
           required: false
         },
         {
@@ -249,10 +267,7 @@ export default {
       this.checkLinkList = res.checkLinkList;
       this.resultList = res.checkResultList;
       //用来显示一报二报 无效 省代审批了市代也是待审核
-      if (
-        !res.reportStatus ||
-        (res.reportStatus === 100 )
-) {
+      if (!res.reportStatus || (res.reportStatus === 100 )) {
         this.reportResult = "待审核";
       } else {
         this.reportResult = "已审核";
@@ -266,10 +281,22 @@ export default {
       res.reportTime = res.reportTime.substring(0, 10);
       res.signDate = res.signDate ? res.signDate.substring(0, 10) : "";
       this.projectName = res.projectName;
+      if(res.relateDesc=='其他')
+      {
+        this.regoinList.splice(11,0,{
+          nm: "extraRelateDesc",
+          key: "其他关系描述：",
+          value: "",
+          required: false
+        })
+      }
       this.regoinList.map(item => {
         item.value = res[item.nm];
         if (item.nm === "planPurchaseAmount") {
           item.value = `${item.value}万元`;
+        }
+        if(item.nm=="isCrossRegion"){
+          item.value=item.value==1?'是':'否';
         }
       });
 

@@ -25,7 +25,7 @@ function get(url, data, header) {
           },
       url: config.serverURL + url,
       success: function(res) {
-        wx.hideLoading();
+        // wx.hideLoading();
         if (res.data.code === 0) {
           resolve(res.data);
         } else {
@@ -76,7 +76,7 @@ function getTotal(url, data, header) {
           },
       url: config.serverURL + url,
       success: function(res) {
-        wx.hideLoading();
+        // wx.hideLoading();
         resolve(res.data);
       },
       fail: function(err) {
@@ -104,7 +104,7 @@ function post(url, data, header) {
       method: "post",
       url: config.serverURL + url,
       success: function(res) {
-        wx.hideLoading();
+        // wx.hideLoading();
         if (res.data.code === 0) {
           resolve(res.data);
         } else {
@@ -819,7 +819,7 @@ class api {
           });
         },
         complete: function() {
-          wx.hideLoading();
+          // wx.hideLoading();
         }
       });
     });

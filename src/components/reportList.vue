@@ -4,56 +4,69 @@
       class="list-item"
       v-for="item in list"
       :key="item.id"
-      @click="toDetail(item.id,item.reportResult,item.reportType,item.reportStatus)"
+      @click="
+        toDetail(item.id, item.reportResult, item.reportType, item.reportStatus)
+      "
     >
       <div class="content">
         <div>
           <span>所在区域：</span>
-          <span>{{item.projectAreaName ? item.projectAreaName : ''}}</span>
+          <span>{{ item.projectAreaName ? item.projectAreaName : "" }}</span>
         </div>
         <div>
           <span>经销商名称：</span>
-          <span>{{item.saleName?item.saleName:''}}</span>
+          <span>{{ item.saleName ? item.saleName : "" }}</span>
         </div>
         <div>
           <span>项目负责人：</span>
-          <span>{{item.projectLeader ? item.projectLeader : ''}}</span>
+          <span>{{ item.projectLeader ? item.projectLeader : "" }}</span>
         </div>
         <div>
           <span>联系电话：</span>
-          <span>{{item.leaderLinkPhone ? item.leaderLinkPhone : ''}}</span>
+          <span>{{ item.leaderLinkPhone ? item.leaderLinkPhone : "" }}</span>
         </div>
         <div>
           <span>工程名称：</span>
-          <span>{{item.projectName ? item.projectName : ''}}</span>
+          <span>{{ item.projectName ? item.projectName : "" }}</span>
         </div>
         <div>
           <span>报备时间：</span>
-          <span>{{item.reportTime ? item.reportTime : ''}}</span>
+          <span>{{ item.reportTime ? item.reportTime : "" }}</span>
         </div>
         <div>
           <span>报备类型：</span>
-          <span>{{item.reportType===1?'工程报备':'家装报备'}}</span>
+          <span>{{ item.reportType === 1 ? "工程报备" : "家装报备" }}</span>
         </div>
-        <div v-if="item.annotation&&(item.reportResult==='一报'||item.reportResult==='二报' ||item.reportResult==='三报')">
+        <div
+          v-if="item.annotation &&(item.reportResult === '一报' ||item.reportResult === '二报' ||item.reportResult === '三报')"
+        >
           <span>批注：</span>
-          <span>{{item.annotation}}</span>
+          <span>{{ item.annotation }}</span>
         </div>
 
-        <div class="set" v-if="userId===item.reportUserId">
-          <p v-if="item.reportResult==='待提交' || item.reportResult==='待区域负责人审核'  || item.reportResult==='待审核' || item.reportResult === '待省代审核'" @click.stop="toCancel(item.id)">取消</p>
+        <div class="set" v-if="userId === item.reportUserId">
+          <p
+            v-if="item.reportResult === '待提交' ||item.reportResult === '待区域负责人审核' ||item.reportResult === '待审核' || item.reportResult === '待省代审核'"
+            @click.stop="toCancel(item.id)"
+          >
+            取消
+          </p>
           <p
             class="active"
-            v-if="item.reportResult!=='无效' && item.reportResult!=='已完结' && item.reportResult!=='提前结束'"
+            v-if="item.reportResult !== '无效' &&item.reportResult !== '已完结' &&item.reportResult !== '提前结束'"
             @click.stop="toFinish(item.id)"
-          >提前结束</p>
+          >
+            提前结束
+          </p>
         </div>
       </div>
       <span class="iconfont">&#xe602;</span>
       <div
         class="state"
-        :class="{'active':item.reportResult==='待审核' ||item.reportResult==='待区域负责人审核' || item.reportResult === '待省代审核','notify':item.reportResult==='一报'||item.reportResult==='二报' ||item.reportResult==='三报'}"
-      >{{item.reportResult}}</div>
+        :class="{active:item.reportResult === '待审核' ||item.reportResult === '待区域负责人审核' ||item.reportResult === '待省代审核',notify:item.reportResult === '一报' ||item.reportResult === '二报' ||item.reportResult === '三报',}"
+      >
+        {{ item.reportResult }}
+      </div>
     </div>
   </div>
 </template>
@@ -63,12 +76,12 @@ export default {
   props: {
     list: {
       type: Array,
-      default: []
+      default: [],
     },
     userId: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   methods: {
     toDetail(id, type, reportType, reportStatus) {
@@ -99,9 +112,9 @@ export default {
           if (res.confirm) {
             let param = {
               id: id,
-              reportStatus: 400
+              reportStatus: 400,
             };
-            that.api.sysReportInfoSave(param).then(res => {
+            that.api.sysReportInfoSave(param).then((res) => {
               if (res && res.data) {
                 that.$emit("set");
               }
@@ -109,20 +122,20 @@ export default {
           } else if (res.cancel) {
             console.log("用户点击取消");
           }
-        }
+        },
       });
     },
     async toCancel(id) {
       let param = {
         id: id,
-        reportStatus: -1
+        reportStatus: -1,
       };
       let res = await this.api.sysReportInfoSave(param);
       if (res && res.data) {
         this.$emit("set");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

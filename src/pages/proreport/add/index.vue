@@ -1174,8 +1174,8 @@ export default {
       let data = await this.api.getSysCustomerList(param);
       this.linkedList = data ? data : [];
     },
-    getUserInfo() {
-      // this.userInfo = await this.api.getSysUserInfo();
+   async getUserInfo() {
+      this.userInfo = await this.api.getSysUserInfo();
       this.userInfo = this.until.seGet("userInfo");
       console.log(this.userInfo);
       if (this.userInfo.agentInfoId) {

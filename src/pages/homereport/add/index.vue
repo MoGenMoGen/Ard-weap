@@ -2,21 +2,23 @@
   <div class="home-report">
     <div class="searchComp" v-if="searchShow">
       <div class="content">
-        <span class="iconfont" @click="searchShow=false">&#xe7c6;</span>
-        <input placeholder="请输入联系人" v-model="compName" maxlength="100" />
-        <div class="list" v-if=" linkedList && linkedList.length>0">
+        <span class="iconfont" @click="searchShow = false">&#xe7c6;</span>
+        <input placeholder="请输入联系人" v-model.lazy="compName" maxlength="100" />
+        <div class="list" v-if="linkedList && linkedList.length > 0">
           <p
-            v-for="(item,index) in linkedList"
+            v-for="(item, index) in linkedList"
             :key="index"
             @click="chooseComp(item)"
-          >{{item.name+' (电话：'+item.linkPhone+')'}}</p>
+          >
+            {{ item.name + " (电话：" + item.linkPhone + ")" }}
+          </p>
         </div>
         <p class="noData" v-else>— 没有相关数据 —</p>
       </div>
     </div>
     <!-- <div class="addComp" v-if="addShow">
       <div class="content">
-        <input placeholder="请输入联系人" v-model="addComp.corpName" maxlength="100" />
+        <input placeholder="请输入联系人" v-model.lazy="addComp.corpName" maxlength="100" />
         <p>
           <span @click="addCancel">取消</span>
           <span @click="addComfirm">确定</span>
@@ -31,14 +33,18 @@
           type="text"
           placeholder="请输入项目名称"
           placeholder-style="color:#999;"
-          v-model="form.projectName"
+          v-model.lazy="form.projectName"
         />
       </div>
       <div>
         <span class="iconfont">&#xe69f;</span>
         <text>项目地址：</text>
         <div class="addr">
-          <addr-select @changeAddr="changeAddr" :disabled="disabled" ref="addr"></addr-select>
+          <addr-select
+            @changeAddr="changeAddr"
+            :disabled="disabled"
+            ref="addr"
+          ></addr-select>
         </div>
       </div>
 
@@ -49,8 +55,18 @@
           type="text"
           placeholder="请输入街道（镇）详细地址+门牌号"
           placeholder-style="color:#999;"
-          v-model="form.projectAddress"
+          v-model.lazy="form.projectAddress"
         />
+      </div>
+      <div>
+        <span class="iconfont">&#xe69f;</span>
+        <text>是否跨区：</text>
+        <radio-group class="radio-group" @change="crossRegionChange">
+          <label class="radio" v-for="(item, index) in items" :key="index">
+            <radio :value="item.name" :checked="item.checked" />
+            {{ item.value }}
+          </label>
+        </radio-group>
       </div>
       <div>
         <span class="iconfont">&#xe69f;</span>
@@ -62,18 +78,21 @@
           disabled="true"
           @change="reportDateChange"
         >
-          <view class="picker">{{reportTime}}</view>
+          <view class="picker">{{ reportTime }}</view>
           <span class="iconfont">&#xe611;</span>
         </picker>
       </div>
       <div>
         <span class="iconfont">&#xe69f;</span>
         <text>联系人：</text>
-        <button
-          plain="true"
-          @click="searchShow=true"
-        >{{form.projectLeader?form.projectLeader:'请输入联系人'}}</button>
-        <i class="iconfont" @click="toPage('../../personal/linkedadd/main?type=add')">&#xe605;</i>
+        <button plain="true" @click="searchShow = true">
+          {{ form.projectLeader ? form.projectLeader : "请输入联系人" }}
+        </button>
+        <i
+          class="iconfont"
+          @click="toPage('../../personal/linkedadd/main?type=add')"
+          >&#xe605;</i
+        >
       </div>
       <div>
         <span class="iconfont">&#xe69f;</span>
@@ -81,16 +100,55 @@
         <input
           type="number"
           maxlength="11"
-          v-model="form.leaderLinkPhone"
-          placeholder="请输联系人电话"
+          v-model.lazy="form.leaderLinkPhone"
+          placeholder="请输入联系人电话"
+          placeholder-style="color:#999;"
+        />
+      </div>
+      <div>
+        <span class="iconfont">&#xe69f;</span>
+        <text>信息来源：</text>
+        <input
+          type="text"
+          v-model.lazy="form.infoSource"
+          placeholder="请输入信息来源"
+          placeholder-style="color:#999;"
+        />
+      </div>
+      <div>
+        <span class="iconfont">&#xe69f;</span>
+        <text>关系描述：</text>
+        <picker
+          @change="changeRelateDesc"
+          :range="relateDescList"
+          range-key="nm"
+        >
+          <view class="picker">{{
+            form.relateDesc ? form.relateDesc : " 请选择关系描述"
+          }}</view>
+          <span class="iconfont">&#xe60f;</span>
+        </picker>
+      </div>
+      <div v-if="form.relateDesc == '其他'">
+        <span class="iconfont">&#xe69f;</span>
+        <text>其他关系描述：</text>
+        <input
+          type="text"
+          v-model.lazy="form.extraRelateDesc"
+          placeholder="请输入其他关系来源"
           placeholder-style="color:#999;"
         />
       </div>
       <div>
         <span class="iconfont">&#xe69f;</span>
         <text>预计签约日期：</text>
-        <picker mode="date" start="1980-01-01" :value="form.signDate" @change="bindDateChange">
-          <view class="picker">{{form.signDate}}</view>
+        <picker
+          mode="date"
+          start="1980-01-01"
+          :value="form.signDate"
+          @change="bindDateChange"
+        >
+          <view class="picker">{{ form.signDate }}</view>
           <span class="iconfont">&#xe611;</span>
         </picker>
       </div>
@@ -99,7 +157,7 @@
         <text>预计签约金额：</text>
         <input
           type="number"
-          v-model="form.planPurchaseAmount"
+          v-model.lazy="form.planPurchaseAmount"
           placeholder="请输入签约金额"
           placeholder-style="color:#999;"
         />
@@ -110,7 +168,7 @@
         <text>预计采购产品：</text>
         <input
           type="text"
-          v-model="form.planPurchaseProduct"
+          v-model.lazy="form.planPurchaseProduct"
           placeholder="装饰、线型、净化"
           placeholder-style="color:#999;"
         />
@@ -122,12 +180,15 @@
           auto-height
           placeholder="多行输入"
           placeholder-style="color:#999;"
+          v-model.lazy="form.remark"
         />
       </div>
     </div>
     <div class="operate">
       <button plain="true" :disabled="disabledBtn" @click="save">保存</button>
-      <button plain="true" :disabled="disabledBtn" @click="confirm">确定</button>
+      <button plain="true" :disabled="disabledBtn" @click="confirm">
+        确定
+      </button>
     </div>
   </div>
 </template>
@@ -137,12 +198,16 @@ import addrSelect from "@/components/addrSelect";
 export default {
   data() {
     return {
-      compName:'',
+      compName: "",
       form: {
         projectLeader: "", //联系人
         leaderLinkPhone: "", //联系电话
+        infoSource: "", //信息来源
         projectName: "", //项目名称
         projectAddress: "", //工程所在地
+        isCrossRegion: "", //是否跨区
+        relateDesc: "", //关系描述
+        extraRelateDesc: "", //其他关系描述
         projectAreaCode: "",
         projectAreaName: "",
         signDate: "", //签约时间
@@ -150,7 +215,7 @@ export default {
         planPurchaseProduct: "", //采购产品
         reportType: 2,
         saleType: "", //经销商类别
-        reportUserType: "" //报备项目的用户类型
+        reportUserType: "", //报备项目的用户类型
       },
       disabled: false,
       addShow: false,
@@ -160,7 +225,22 @@ export default {
       linkedList: [],
       userInfo: {},
       disabledBtn: false,
-      reportTime: ""
+      reportTime: "",
+      items: [
+        { name: "0", value: "否", checked: false },
+        { name: "1", value: "是", checked: false },
+      ], //是否跨区
+      relateDescList: [
+        {
+          nm: "装饰设计公司",
+        },
+        {
+          nm: "空调公司",
+        },
+        {
+          nm: "其他",
+        },
+      ],
     };
   },
   onLoad(options) {
@@ -190,8 +270,12 @@ export default {
     this.form = {
       projectLeader: "",
       leaderLinkPhone: "",
+      infoSource: "", //信息来源
       projectName: "",
       projectAddress: "",
+      isCrossRegion: "", //是否跨区
+      relateDesc: "", //关系描述
+      extraRelateDesc: "", //其他关系描述
       projectAreaCode: "",
       projectAreaName: "",
       signDate: "",
@@ -201,16 +285,16 @@ export default {
       projectFollowMan: "", //报备人
       saleType: "", //经销商类别
       reportUserType: "", //报备项目的用户类型
-      projectFollowMan: ""
+      projectFollowMan: "",
     };
 
     this.until.seRemove("areaInfo");
   },
   watch: {
     compName(val) {
-      console.log('=========='+val)
+      console.log("==========" + val);
       this.getLinkedList(val);
-    }
+    },
   },
   methods: {
     async getReportInfo() {
@@ -234,10 +318,28 @@ export default {
       this.form.projectAreaCode = addr.code;
       let areaInfo = {
         areaName: this.form.projectAreaName,
-        areaCode: this.form.projectAreaCode
+        areaCode: this.form.projectAreaCode,
       };
       this.until.seSave("areaInfo", JSON.stringify(areaInfo));
-
+    },
+    //是否跨区
+    crossRegionChange(e) {
+      console.log(e);
+      this.form.isCrossRegion = e.mp.detail.value;
+      this.items.forEach((item, index) => {
+        if (index == e.mp.detail.value) {
+          item.checked = true;
+        } else {
+          item.checked = false;
+        }
+        this.$set(this.items, index, item);
+      });
+    },
+    //选择关系描述
+    changeRelateDesc(e) {
+      console.log(e);
+      let index = e.mp.detail.value;
+      this.form.relateDesc = this.relateDescList[index].nm;
     },
     chooseComp(item) {
       this.form.projectLeader = item.name;
@@ -257,13 +359,13 @@ export default {
 
     async getLinkedList(nm) {
       let param = {
-        devUserId: this.userInfo.userId
+        devUserId: this.userInfo.userId,
       };
       if (this.userInfo.extUserIds) {
         param.extUserIds = this.userInfo.extUserIds;
       }
-      if(nm){
-        param.name = nm
+      if (nm) {
+        param.name = nm;
       }
       let data = await this.api.getSysCustomerList(param);
       this.linkedList = data ? data : [];
@@ -323,10 +425,10 @@ export default {
         this.disabledBtn = false;
         return;
       } else {
-        if(isNaN(this.form.planPurchaseAmount)){
-          this.until.showToast('签约金额必须为数字！', "none", 400);
+        if (isNaN(this.form.planPurchaseAmount)) {
+          this.until.showToast("签约金额必须为数字！", "none", 400);
           this.disabledBtn = false;
-          return
+          return;
         }
         let regPhone = this.reg.checkPhone(this.form.leaderLinkPhone);
         if (regPhone !== "ok") {
@@ -351,23 +453,45 @@ export default {
       this.disabledBtn = false;
     },
     verifyRequired() {
-      let arr = [
-        { projectName: "项目名称" },
-        { projectAreaName: "项目地址" },
-        { projectAddress: "详细地址" },
-        { projectLeader: "联系人" },
-        { leaderLinkPhone: "联系电话" },
-        { signDate: "签约时间" },
-        { planPurchaseAmount: "采购金额" },
-        { planPurchaseProduct: "采购产品" }
-      ];
+      let arr = [];
+
+      if (this.form.relateDesc == "其他") {
+        arr = [
+          { projectName: "项目名称" },
+          { projectAreaName: "项目地址" },
+          { projectAddress: "详细地址" },
+          { isCrossRegion: "是否跨区" },
+          { projectLeader: "联系人" },
+          { leaderLinkPhone: "联系电话" },
+          { infoSource: "信息来源" },
+          { relateDesc: "关系描述" },
+          { extraRelateDesc: "其他关系描述" },
+          { signDate: "签约时间" },
+          { planPurchaseAmount: "采购金额" },
+          { planPurchaseProduct: "采购产品" },
+        ];
+      } else {
+        arr = [
+          { projectName: "项目名称" },
+          { projectAreaName: "项目地址" },
+          { projectAddress: "详细地址" },
+          { isCrossRegion: "是否跨区" },
+          { projectLeader: "联系人" },
+          { leaderLinkPhone: "联系电话" },
+          { infoSource: "信息来源" },
+          { relateDesc: "关系描述" },
+          { signDate: "签约时间" },
+          { planPurchaseAmount: "采购金额" },
+          { planPurchaseProduct: "采购产品" },
+        ];
+      }
 
       return this.until.requireVerify(this.form, arr);
-    }
+    },
   },
   components: {
-    addrSelect
-  }
+    addrSelect,
+  },
 };
 </script>
 
@@ -471,6 +595,7 @@ export default {
     display: -webkit-flex;
     flex-flow: column wrap;
     padding-left: 40rpx;
+    padding-bottom: 46rpx;
     background-color: #fff;
     > div {
       position: relative;

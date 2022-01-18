@@ -99,13 +99,21 @@ export default {
           };
 
           that.api.login(param).then(res => {
-            if (res.code == 400) {
-              // that.until.showToast(res.msg, "none", 2000);
-
+            console.log('res',res);
+            if (res.code == 400) {      
+              that.until.showToast(res.msg, "none", 2000);
+              console.log('400啦是发送到发顺丰所发生的');
+              setTimeout(() => {
               wx.reLaunch({ url: `../login/index/main?msg=${res.msg}` });
+              }, 2000);
             } else {
               //直接得到用户信息
-              that.until.seSave("ilike-token", res.data.token);
+              // that.until.seSave("ilike-token", res.data.token);
+               that.until.seSave("ilike-token", res.data.token);
+                that.until.seSave("userInfo", res.data.userInfo);
+                if (res.data.userInfo.imgUrl) {
+                  that.until.seSave("imgUrl", res.data.userInfo.imgUrl);
+                }
               that.userInfo = res.data.userInfo;
               console.log(111,that.userInfo);
               that.getImgUrl();
