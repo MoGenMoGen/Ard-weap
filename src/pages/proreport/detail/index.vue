@@ -396,7 +396,7 @@ export default {
       ],
       relsArr: [
         { nm: "unitType", key: "单位身份：", value: "投资方", required: true },
-        { nm: "unitInfo", key: "单位信息：", value: "", required: true },
+        // { nm: "unitInfo", key: "单位信息：", value: "", required: true },
         {
           nm: "unitName",
           key: "公司名称：",
@@ -415,12 +415,12 @@ export default {
           value: "12345678910",
           required: true,
         },
-        {
-          nm: "expectSucceedPercent",
-          key: "预计成功率：",
-          value: "80%",
-          required: false,
-        },
+        // {
+        //   nm: "expectSucceedPercent",
+        //   key: "预计成功率：",
+        //   value: "80%",
+        //   required: false,
+        // },
       ],
       followArr: [
         {

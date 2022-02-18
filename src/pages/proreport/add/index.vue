@@ -347,7 +347,7 @@
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
-        <div>
+        <!-- <div>
           <span class="iconfont">&#xe69f;</span>
           <text>单位信息一：</text>
           <input
@@ -356,7 +356,7 @@
             placeholder="请输入单位信息"
             placeholder-style="color:#999;"
           />
-        </div>
+        </div> -->
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>公司名称一：</text>
@@ -389,14 +389,14 @@
             placeholder-style="color:#999;"
           />
         </div>
-        <div>
+        <!-- <div>
           <text>预计成功率一：</text>
           <input
             type="number"
             v-model.lazy="unitForm1.expectSucceedPercent"
             placeholder-style="color:#999;"
           />%
-        </div>
+        </div> -->
       </div>
       <div class="info" v-if="showUnitForm2">
         <span></span>
@@ -413,7 +413,7 @@
             <span class="iconfont">&#xe60f;</span>
           </picker>
         </div>
-        <div>
+        <!-- <div>
           <span class="iconfont">&#xe69f;</span>
           <text>单位信息二：</text>
           <input
@@ -422,7 +422,7 @@
             placeholder="请输入单位信息"
             placeholder-style="color:#999;"
           />
-        </div>
+        </div> -->
         <div>
           <span class="iconfont">&#xe69f;</span>
           <text>公司名称二：</text>
@@ -455,14 +455,14 @@
             placeholder-style="color:#999;"
           />
         </div>
-        <div>
+        <!-- <div>
           <text>预计成功率二：</text>
           <input
             type="number"
             v-model.lazy="unitForm2.expectSucceedPercent"
             placeholder-style="color:#999;"
           />%
-        </div>
+        </div> -->
       </div>
       <div class="btn">
         <button plain="true" @click="addUnitList(true, true)">
@@ -659,7 +659,7 @@ export default {
       saleList: [],
       relsArr: [
         { nm: "unitType", key: "单位身份：", value: "投资方", required: true },
-        { nm: "unitInfo", key: "单位信息：", value: "", required: true },
+        // { nm: "unitInfo", key: "单位信息：", value: "", required: true },
         {
           nm: "unitName",
           key: "公司名称：",
@@ -678,12 +678,12 @@ export default {
           value: "12345678910",
           required: true,
         },
-        {
-          nm: "expectSucceedPercent",
-          key: "预计成功率：",
-          value: "80%",
-          required: false,
-        },
+        // {
+        //   nm: "expectSucceedPercent",
+        //   key: "预计成功率：",
+        //   value: "80%",
+        //   required: false,
+        // },
       ],
       form: {
         saleId: "",
@@ -863,6 +863,9 @@ export default {
     if (this.id) {
       this.showUnitForm2 = false;
       await this.getReportInfo();
+    }
+    else{
+      this.showUnitForm2 = true;
     }
     this.form.corpName = this.userInfo.agentInfoName;
 
@@ -1291,7 +1294,7 @@ export default {
       if (type == 1) {
         arr = [
           { unitType: "单位身份一" },
-          { unitInfo: "单位信息一" },
+          // { unitInfo: "单位信息一" },
           { unitName: "公司名称一" },
           { unitLeader: "负责人姓名一" },
           { unitLinkPhone: "联系电话一" },
@@ -1299,7 +1302,7 @@ export default {
       } else if (type == 2) {
         arr = [
           { unitType: "单位身份二" },
-          { unitInfo: "单位信息二" },
+          // { unitInfo: "单位信息二" },
           { unitName: "公司名称二" },
           { unitLeader: "负责人姓名二" },
           { unitLinkPhone: "联系电话二" },
@@ -1789,8 +1792,8 @@ export default {
       > div {
         &:nth-last-of-type(1) {
           input {
-            flex: 0 0 auto;
-            width: 140rpx;
+            // flex: 0 0 auto;
+            // width: 140rpx;
           }
         }
       }
