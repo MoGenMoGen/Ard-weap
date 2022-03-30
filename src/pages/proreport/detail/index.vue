@@ -12,7 +12,7 @@
           type="text"
           v-model="commit.annotation"
           placeholder="请输入批注"
-          style="border: 1px solid #ccc; width: 86%; box-sizing: border-box;padding: 0 20rpx; margin: 74rpx auto;"
+          style="border: 1px solid #ccc;width: 86%; box-sizing: border-box;padding: 0 20rpx;  margin: 74rpx auto;"
         />
         <div class="confirm" @click="confirm">确定</div>
       </div>
@@ -70,7 +70,9 @@
       <div v-for="item in regoinList" :key="item.nm">
         <span v-if="item.required" class="iconfont">&#xe69f;</span>
         <div>{{ item.key }}</div>
-        <div :style="{'color':(item.nm=='annotation'?'red':'')}">{{ item.value }}</div>
+        <div :style="{ color: item.nm == 'annotation' ? 'red' : '' }">
+          {{ item.value }}
+        </div>
       </div>
     </div>
     <!-- 相关单位 -->
@@ -127,6 +129,45 @@
         </div>
       </div>
     </div>
+    <!-- 关联的订单信息及对应产品线的金额开始 -->
+    <div class="order-info">
+      <div class="title-info">
+        <span></span>
+        <span>订单信息</span>
+      </div>
+      <div class="order-box">
+          <div class="order-title">
+            <div class="line1 line-title">订单编码-非erp</div>
+            <div class="line2 line-title">订单编码</div>
+            <div class="line3 line-title">金额(折扣前)</div>
+            <div class="line4 line-title">折扣金额</div>
+            <div class="line5 line-title">应付金额</div>
+            <div class="line6 line-title">订单已付金额</div>
+          </div>
+        <div
+          class="order-content"
+          v-for="(item, index) in orderList"
+          :key="index"
+        >
+          <div class="line1 line-content">{{ item.val1 }}</div>
+          <div class="line2 line-content">{{ item.val2 }}</div>
+          <div class="line3 line-content">{{ item.val3 }}</div>
+          <div class="line4 line-content">{{ item.val4 }}</div>
+          <div class="line5 line-content">{{ item.val5 }}</div>
+          <div class="line6 line-content">{{ item.val6 }}</div>
+        </div>
+      </div>
+      <div class="cpx-title">
+        <div>产品线分类</div>
+        <div>合计（元）</div>
+      </div>
+      <div class="cpx-content" v-for="(item,index) in cpxList" :key="index">
+        <div>{{item.name}}</div>
+        <div>{{item.price}}</div>
+      </div>
+    </div>
+    <!-- 关联的订单信息及对应产品线的金额结束 -->
+
     <!-- 相关报备 -->
     <div
       class="competitor-contain"
@@ -439,6 +480,31 @@ export default {
       roleType: "业务经理",
       apprState: "一报",
       canAppr: false,
+      orderList: [
+        {
+          val1: "XM215458484884888-遮",
+          val2: "6w5-G4874878",
+          val3: "1944",
+          val4: "3545",
+          val5: "1547",
+          val6: "5434",
+        },
+        {
+          val1: "XM215458484884888-遮",
+          val2: "6w5-G4874878",
+          val3: "1944",
+          val4: "3545",
+          val5: "1547",
+          val6: "5434",
+        },
+      ],
+      cpxList: [{
+        name:'装饰风口',
+        price: '1658'
+      },{
+        name:'装饰风口',
+        price: '1658'
+      }]
     };
   },
   computed: {
@@ -840,7 +906,7 @@ export default {
     border-bottom: 1px solid @borderColor;
   }
   > div:nth-last-child(2) {
-    padding-bottom: 100rpx;
+    padding-bottom: 140rpx;
   }
   .operate,
   .business,
@@ -890,9 +956,89 @@ export default {
   .resultList,
   .rels,
   .follow-contain,
-  .competitor-contain {
+  .competitor-contain,
+  .order-info {
     .title-info {
       background-color: #fff;
+    }
+  }
+  .order-info {
+    .order-box {
+        overflow: auto hidden;
+        white-space: nowrap;
+        width: auto;
+        background: #fff;
+      .order-title,
+      .order-content {
+        height: 82rpx;
+        line-height: 82rpx;
+        
+        .line1 {
+          width:350rpx;
+        }
+        .line2 {
+          width:200rpx;
+
+        }
+        .line3 {
+          width:200rpx;
+
+        }
+        .line4 {
+          width:130rpx;
+
+        }
+        .line5 {
+          width:130rpx;
+
+        }
+        .line6 {
+          width:200rpx;
+
+        }
+      }
+      .order-title {
+       
+        .line-title {
+          font-size: 24rpx;
+          font-weight: 400;
+          color: #909090;
+          text-align: center;
+          display: inline-block;
+           border-bottom: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+        }
+      }
+      .order-content {
+        .line-content {
+          font-size: 26rpx;
+          font-weight: 400;
+          color: #303030;
+          text-align: center;
+          display: inline-block;
+          border-bottom: 1px solid #ddd;
+
+        }
+      }
+    }
+    .cpx-title {
+      margin-top: 10rpx;
+      color: #909090;
+    }
+    .cpx-title, .cpx-content {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 20rpx 30rpx;
+      box-sizing: border-box;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      div {
+        width: 50%;
+      }
+      div:last-child{
+        text-align: center;
+      }
     }
   }
 }
