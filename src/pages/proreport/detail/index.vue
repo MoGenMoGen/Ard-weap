@@ -131,7 +131,7 @@
     </div>
     <!-- 关联的订单信息及对应产品线的金额开始 -->
     <div class="order-info">
-      <div class="title-info">
+      <div class="title-info" style="margin-top:10rpx;">
         <span></span>
         <span>订单信息</span>
       </div>
@@ -148,13 +148,14 @@
           class="order-content"
           v-for="(item, index) in orderList"
           :key="index"
+          v-if="orderList.length>0"
         >
-          <div class="line1 line-content">{{ item.val1 }}</div>
-          <div class="line2 line-content">{{ item.val2 }}</div>
-          <div class="line3 line-content">{{ item.val3 }}</div>
-          <div class="line4 line-content">{{ item.val4 }}</div>
-          <div class="line5 line-content">{{ item.val5 }}</div>
-          <div class="line6 line-content">{{ item.val6 }}</div>
+          <div class="line1 line-content">{{ item.crmOrderVo.orderCode }}</div>
+          <div class="line2 line-content">{{ item.crmOrderVo.erpCode }}</div>
+          <div class="line3 line-content">{{ item.crmOrderVo.payAmount }}</div>
+          <div class="line4 line-content">{{ item.crmOrderVo.discountAmount }}</div>
+          <div class="line5 line-content">{{ item.crmOrderVo.totalAmount }}</div>
+          <div class="line6 line-content">{{ item.crmOrderVo.payedAmount }}</div>
         </div>
       </div>
       <div class="cpx-title">
@@ -481,30 +482,8 @@ export default {
       apprState: "一报",
       canAppr: false,
       orderList: [
-        {
-          val1: "XM215458484884888-遮",
-          val2: "6w5-G4874878",
-          val3: "1944",
-          val4: "3545",
-          val5: "1547",
-          val6: "5434",
-        },
-        {
-          val1: "XM215458484884888-遮",
-          val2: "6w5-G4874878",
-          val3: "1944",
-          val4: "3545",
-          val5: "1547",
-          val6: "5434",
-        },
       ],
-      cpxList: [{
-        name:'装饰风口',
-        price: '1658'
-      },{
-        name:'装饰风口',
-        price: '1658'
-      }]
+      cpxList: []
     };
   },
   computed: {
@@ -613,6 +592,8 @@ export default {
       this.relItems = res.unitList;
       // console.log('list',res.unitList);
       this.competitorItems = res.competeList;
+      this.orderList=res.orderDtos;
+      this.cpxList=res.maps;
       this.checkLinkList = res.checkLinkList;
 
       // console.log(this.checkLinkList)
