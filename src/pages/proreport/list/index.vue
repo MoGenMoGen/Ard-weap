@@ -280,18 +280,21 @@ export default {
             break;
         }
 
-        //当一报的时候，并且是省代审批市代后的报备，需显示'待主管审批'
+        //当一报的时候，并且是省代审批市代后的报备，需显示'待主管审批'  
         if (item.saleType === 3 && item.reportStatus === 100) {
-          item.reportResult = "待区域负责人审核";
+          // 待区域负责人审核
+          item.reportResult = "待主管审批";
         }
         if (item.saleType === 3 && item.reportStatus === 0) {
-          item.reportResult = "待省代审核";
+          // 待省代审核
+          item.reportResult = "待主管审批";
         }
         if (
           (item.saleType === 1 || item.saleType === 2) &&
           item.reportStatus === 0
         ) {
-          item.reportResult = "待区域负责人审核";
+          // 待区域负责人审核
+          item.reportResult = "待主管审批";
         }
 
         item.reportTime = item.reportTime

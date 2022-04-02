@@ -556,7 +556,8 @@ export default {
     async getReportInfo() {
       console.log("项目信息");
       let res = await this.api.getSysReportInfo(this.id);
-      this.detailData = await this.api.getSysReportInfo(this.id);
+      // this.detailData = await this.api.getSysReportInfo(this.id);
+      this.detailData = JSON.parse(JSON.stringify(res))
       this.commit.annotation = this.detailData.annotation;
       // console.log('报备审核111111',this.userInfo.userId ,res.groupLeaderId);
       console.log("======================", this.detailData);
