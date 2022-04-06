@@ -273,19 +273,19 @@ export default {
         {
           nm: "reportResult",
           key: "审核状态：",
-          value: "二宝",
+          value: "",
           required: false,
         },
         {
           nm: "reportChecker",
           key: "审核人：",
-          value: "徐国祥",
+          value: "",
           required: false,
         },
         {
           nm: "reportCheckTime",
           key: "审核时间：",
-          value: "2019-06-20   12:01:12",
+          value: "",
           required: false,
         },
       ],
@@ -293,168 +293,168 @@ export default {
         {
           nm: "projectAreaName",
           key: "工程所在区域：",
-          value: "浙江省宁波市海曙区",
+          value: "",
           required: true,
         },
         {
           nm: "projectAddress",
           key: "工程详细地址：",
-          value: "人民路东888号 20#",
+          value: "",
           required: true,
         },
         {
           nm: "projectFollowMan",
           key: "工程跟进人：",
-          value: "王小小",
+          value: "",
           required: true,
         },
         {
           nm: "reportTime",
           key: "申报时间：",
-          value: "2019-06-29",
+          value: "",
           required: true,
         },
         {
           nm: "saleName",
           key: "经销商名称：",
-          value: "宁波楚晟光新能源科技有限公司",
+          value: "",
           required: true,
         },
-        { nm: "outTown", key: "异地工程：", value: "否", required: true },
+        { nm: "outTown", key: "异地工程：", value: "", required: true },
         {
           nm: "projectLeader",
           key: "项目负责人：",
-          value: "张扬",
+          value: "",
           required: true,
         },
         {
           nm: "leaderPost",
           key: "职务：",
-          value: "总经理",
+          value: "",
           required: true,
         },
         {
           nm: "leaderLinkPhone",
           key: "联系电话：",
-          value: "12345678910",
+          value: "",
           required: true,
         },
         {
           nm: "projectName",
           key: "工程名称：",
-          value: "展厅装饰风口",
+          value: "",
           required: true,
         },
         {
           nm: "projectType",
           key: "工程类型：",
-          value: "工程类型",
+          value: "",
           required: true,
         },
         {
           nm: "projectStatus",
           key: "工程现状：",
-          value: `土建、封顶、外装、内装等具体进度状况；`,
+          value: ``,
           required: true,
         },
         {
           nm: "mainProduct",
           key: "主要产品类型：",
-          value: "产品类型",
+          value: "",
           required: true,
         },
         {
           nm: "projectInvestAmount",
           key: "工程投资金额：",
-          value: "10万",
+          value: "",
           required: false,
         },
         {
           nm: "bidTime",
           key: "投标时间：",
-          value: "2019-06-29",
+          value:'',
           required: false,
         },
         {
           nm: "projectOpenTime",
           key: "工程施工时间：",
-          value: "2019-06-29",
+          value:'',
           required: true,
         },
         {
           nm: "planPurchaseAmount",
           key: "预采金额：",
-          value: `10万`,
+          value: ``,
           required: true,
         },
         {
           nm: "planPurchaseTime",
           key: "预采时间：",
-          value: "2019-06-29",
+          value:'',
           required: true,
         },
         {
           nm: "signDate",
           key: "签约时间：",
-          value: "2019-06-29",
+          value:'',
           required: false,
         },
         {
           nm: "actualPurchaseTime",
           key: "实际采购时间：",
-          value: "2019-06-29",
+          value:'',
           required: false,
         },
         {
           nm: "remark",
           key: "我方关系情况及技术优势描述：",
-          value: "我方关系情况及技术优势描述",
+          value:'',
           required: true,
         },
         {
           nm: "purchaseModel",
           key: "采购模式：",
-          value: "甲定甲供",
+          value:'',
           required: false,
         },
         {
           nm: "preReportUserNm",
           key: "上个报备用户：",
-          value: "上个报备用户",
+          value: "",
           required: false,
         },
         {
           nm: "preAgentName",
           key: "上个经销商：",
-          value: "上个经销商",
+          value: "",
           required: false,
         },
         {
           nm: "annotation",
-          key: "批注",
-          value: "批注",
+          key: "批注：",
+          value: "",
           required: false,
         },
       ],
       relsArr: [
-        { nm: "unitType", key: "单位身份：", value: "投资方", required: true },
+        { nm: "unitType", key: "单位身份：", value: "", required: true },
         // { nm: "unitInfo", key: "单位信息：", value: "", required: true },
         {
           nm: "unitName",
           key: "公司名称：",
-          value: "宁波楚晟光新能源科技有限公司",
+          value: "",
           required: true,
         },
         {
           nm: "unitLeader",
           key: "负责人姓名：",
-          value: "张子龙",
+          value: "",
           required: true,
         },
         {
           nm: "unitLinkPhone",
           key: "联系电话：",
-          value: "12345678910",
+          value: "",
           required: true,
         },
         // {
@@ -468,14 +468,14 @@ export default {
         {
           nm: "mainTarget",
           key: "主攻对象：",
-          value: "张子龙",
+          value: "",
           required: false,
         },
-        { nm: "decideName", key: "决策者：", value: "张子龙", required: false },
+        { nm: "decideName", key: "决策者：", value: "", required: false },
       ],
       competitorArr: [
-        { nm: "name", key: "名称：", value: "竞争对手名称", required: false },
-        { nm: "remark", key: "优势：", value: "竞争对手名称", required: false },
+        { nm: "name", key: "名称：", value: "", required: false },
+        { nm: "remark", key: "优势：", value: "", required: false },
       ],
       userInfo: {},
       roleType: "业务经理",
@@ -521,6 +521,7 @@ export default {
     },
   },
   onLoad(options) {
+    // Object.assign(this.$data, this.$options.data())
     if (options.fromType) {
       this.fromType = true;
     } else {
@@ -529,6 +530,7 @@ export default {
     this.id = options.id;
     this.reportResult = options.reportResult;
     console.log(this.id, `project report${this.reportResult}`);
+
   },
   onUnload() {
     this.canAppr = false;
@@ -555,7 +557,12 @@ export default {
     },
     async getReportInfo() {
       console.log("项目信息");
-      let res = await this.api.getSysReportInfo(this.id);
+      wx.showLoading({
+        title: '加载中···'
+      });
+      // you are pig
+      let res=await this.api.getSysReportInfo(this.id);
+      wx.hideLoading();
       // this.detailData = await this.api.getSysReportInfo(this.id);
       this.detailData = JSON.parse(JSON.stringify(res))
       this.commit.annotation = this.detailData.annotation;
