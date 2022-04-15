@@ -562,6 +562,7 @@ export default {
       });
       // you are pig
       let res=await this.api.getSysReportInfo(this.id);
+      let order=await this.api.getSysReportOrderInfo(this.id);
       wx.hideLoading();
       // this.detailData = await this.api.getSysReportInfo(this.id);
       this.detailData = JSON.parse(JSON.stringify(res))
@@ -600,8 +601,8 @@ export default {
       this.relItems = res.unitList;
       // console.log('list',res.unitList);
       this.competitorItems = res.competeList;
-      this.orderList=res.orderDtos;
-      this.cpxList=res.maps;
+      this.orderList=order.orderDtos;
+      this.cpxList=order.maps;
       this.checkLinkList = res.checkLinkList;
 
       // console.log(this.checkLinkList)

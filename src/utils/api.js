@@ -198,6 +198,7 @@ class api {
       });
     });
   }
+  // 报备详情
   getSysReportInfo(data) {
     let header = {
       "yui3-token": wx.getStorageSync("ilike-token")
@@ -211,6 +212,21 @@ class api {
       });
     });
   }
+  // 报备详情-关联订单信息
+  getSysReportOrderInfo(data) {
+    let header = {
+      "yui3-token": wx.getStorageSync("ilike-token")
+    };
+
+    return new Promise((resolve, reject) => {
+      post(`/crm/report/api/${data}/crmInfo`, "", header).then(res => {
+        if (res.code === 0) {
+          resolve(res.data);
+        }
+      });
+    });
+  }
+
   getSysFollowRecordList(data) {
     let header = {
       "yui3-token": wx.getStorageSync("ilike-token")
